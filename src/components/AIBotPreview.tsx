@@ -1,4 +1,5 @@
 import { Bot, Check, ArrowRight, User } from "lucide-react";
+import { openAiBot } from "@/lib/navActions";
 
 const features = [
   "Answers from actual JNTUK content",
@@ -34,7 +35,10 @@ export function AIBotPreview() {
             ))}
           </ul>
 
-          <button className="mt-8 inline-flex h-12 items-center gap-2 rounded-full bg-gradient-cta px-7 text-sm font-medium text-white shadow-glow-purple transition-transform hover:scale-105 active:scale-95">
+          <button
+            onClick={openAiBot}
+            className="mt-8 inline-flex h-12 items-center gap-2 rounded-full bg-gradient-cta px-7 text-sm font-medium text-white shadow-glow-purple transition-transform hover:scale-105 active:scale-95"
+          >
             Try AI Bot Now
             <ArrowRight className="h-4 w-4" />
           </button>

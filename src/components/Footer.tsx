@@ -1,4 +1,25 @@
 import { GraduationCap, Github, Instagram, Send } from "lucide-react";
+import { openAiBot, scrollToId } from "@/lib/navActions";
+
+const socials = [
+  { Icon: Github, href: "https://github.com", label: "GitHub" },
+  { Icon: Instagram, href: "https://instagram.com", label: "Instagram" },
+  { Icon: Send, href: "https://t.me", label: "Telegram" },
+];
+
+const quickLinks: { label: string; action: () => void }[] = [
+  { label: "Home", action: () => window.scrollTo({ top: 0, behavior: "smooth" }) },
+  { label: "Regulations", action: () => scrollToId("explorer") },
+  { label: "AI Bot", action: () => openAiBot() },
+  { label: "Formula Sheets", action: () => scrollToId("explorer") },
+];
+
+const regLinks: { label: string; action: () => void }[] = [
+  { label: "R20 Branches", action: () => scrollToId("explorer") },
+  { label: "R23 Branches", action: () => scrollToId("explorer") },
+  { label: "Previous Papers", action: () => scrollToId("explorer") },
+  { label: "Notes Library", action: () => scrollToId("explorer") },
+];
 
 export function Footer() {
   return (
@@ -16,10 +37,13 @@ export function Footer() {
               Your one-stop platform for JNTUK study materials, AI-powered learning, and exam prep.
             </p>
             <div className="mt-5 flex gap-3">
-              {[Github, Instagram, Send].map((Icon, i) => (
+              {socials.map(({ Icon, href, label }) => (
                 <a
-                  key={i}
-                  href="#"
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={label}
                   className="flex h-9 w-9 items-center justify-center rounded-full bg-card text-muted-foreground transition-colors hover:bg-primary hover:text-white"
                 >
                   <Icon className="h-4 w-4" />
@@ -33,8 +57,12 @@ export function Footer() {
               Quick Links
             </h4>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              {["Home", "Regulations", "AI Bot", "Formula Sheets"].map((l) => (
-                <li key={l}><a href="#" className="hover:text-foreground">{l}</a></li>
+              {quickLinks.map((l) => (
+                <li key={l.label}>
+                  <button onClick={l.action} className="hover:text-foreground">
+                    {l.label}
+                  </button>
+                </li>
               ))}
             </ul>
           </div>
@@ -44,10 +72,13 @@ export function Footer() {
               Regulations
             </h4>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              <li><a href="#" className="hover:text-foreground">R20 Branches</a></li>
-              <li><a href="#" className="hover:text-foreground">R23 Branches</a></li>
-              <li><a href="#" className="hover:text-foreground">Previous Papers</a></li>
-              <li><a href="#" className="hover:text-foreground">Notes Library</a></li>
+              {regLinks.map((l) => (
+                <li key={l.label}>
+                  <button onClick={l.action} className="hover:text-foreground">
+                    {l.label}
+                  </button>
+                </li>
+              ))}
             </ul>
           </div>
 
