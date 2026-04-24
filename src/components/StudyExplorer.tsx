@@ -1,7 +1,8 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ChevronRight, BookOpen, FileText, Video, Calculator, FileQuestion, Bot, Download, Play } from "lucide-react";
 import { regulations, type Resource } from "@/data/jntukData";
 import { UnitBotChat } from "@/components/UnitBotChat";
+import { OPEN_AI_BOT_EVENT } from "@/lib/navActions";
 
 type Step = "regulation" | "branch" | "year" | "semester" | "subject" | "unit" | "resource";
 
@@ -53,6 +54,29 @@ export function StudyExplorer() {
     : !subjectCode ? "subject"
     : !unitId ? "unit"
     : "resource";
+
+  // Listen for global "open AI bot" requests from Navbar/Footer/etc.
+  useEffect(() => {
+    const handler = () => {
+      // Auto-fill the first available path so the AI tab can render immediately.
+      const r = regulations[0];
+      const b = r?.branches[0];
+      const y = b?.years[0];
+      const s = y?.semesters[0];
+      const sub = s?.subjects[0];
+      const u = sub?.units[0];
+
+      setRegCode((prev) => prev || r?.code || "");
+      setBranchCode((prev) => prev || b?.code || "");
+      setYearNum((prev) => prev || (y ? String(y.number) : ""));
+      setSemNum((prev) => prev || (s ? String(s.number) : ""));
+      setSubjectCode((prev) => prev || sub?.code || "");
+      setUnitId((prev) => prev || u?.id || "");
+      setTab("ai");
+    };
+    window.addEventListener(OPEN_AI_BOT_EVENT, handler);
+    return () => window.removeEventListener(OPEN_AI_BOT_EVENT, handler);
+  }, []);
 
   return (
     <section id="explorer" className="px-4 py-16 sm:px-6 sm:py-20">
