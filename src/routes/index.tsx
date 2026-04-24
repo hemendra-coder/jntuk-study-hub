@@ -2,9 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Navbar } from "@/components/Navbar";
 import { Hero } from "@/components/Hero";
 import { StatsBar } from "@/components/StatsBar";
-import { Features } from "@/components/Features";
-import { RegulationSelector } from "@/components/RegulationSelector";
-import { HowItWorks } from "@/components/HowItWorks";
+import { StudyExplorer } from "@/components/StudyExplorer";
 import { AIBotPreview } from "@/components/AIBotPreview";
 import { Footer } from "@/components/Footer";
 
@@ -19,9 +17,7 @@ function Home() {
       <main>
         <Hero />
         <StatsBar />
-        <Features />
-        <RegulationSelector />
-        <HowItWorks />
+        <StudyExplorer />
         <AIBotPreview />
       </main>
       <Footer />
