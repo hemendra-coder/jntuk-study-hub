@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { ChevronRight, BookOpen, FileText, Video, Calculator, FileQuestion, Bot, Download, Play } from "lucide-react";
 import { regulations, type Resource } from "@/data/jntukData";
+import { UnitBotChat } from "@/components/UnitBotChat";
 
 type Step = "regulation" | "branch" | "year" | "semester" | "subject" | "unit" | "resource";
 
@@ -174,7 +175,7 @@ export function StudyExplorer() {
             </div>
 
             <div className="p-5 sm:p-6">
-              <ResourceView tab={tab} unit={unit} />
+              <ResourceView tab={tab} unit={unit} subject={subject} />
             </div>
           </div>
         ) : (
@@ -267,7 +268,13 @@ function EmptyHint({ step }: { step: Step }) {
   );
 }
 
-function ResourceView({ tab, unit }: { tab: TabId; unit: { resources: Resource[]; topics: string[]; number: number } }) {
+function ResourceView({
+  tab, unit, subject,
+}: {
+  tab: TabId;
+  unit: { resources: Resource[]; topics: string[]; number: number; title: string };
+  subject: { code: string; name: string } | undefined;
+}) {
   if (tab === "syllabus") {
     return (
       <div>
@@ -287,13 +294,18 @@ function ResourceView({ tab, unit }: { tab: TabId; unit: { resources: Resource[]
   }
 
   if (tab === "ai") {
+    if (!subject) return null;
     return (
-      <div className="rounded-xl border border-border bg-card-elevated p-6 text-center">
-        <Bot className="mx-auto h-10 w-10 text-primary" />
-        <p className="mt-3 text-sm text-muted-foreground">
-          AI Bot will activate once Lovable Cloud is enabled and your data is uploaded.
-        </p>
-      </div>
+      <UnitBotChat
+        ctx={{
+          subjectName: subject.name,
+          subjectCode: subject.code,
+          unitNumber: unit.number,
+          unitTitle: unit.title,
+          topics: unit.topics,
+          resources: unit.resources,
+        }}
+      />
     );
   }
 
