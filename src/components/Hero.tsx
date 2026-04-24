@@ -42,14 +42,14 @@ export function Hero() {
           </p>
 
           <div className="mt-8 flex flex-col gap-4 sm:flex-row">
-            <button className="group inline-flex h-12 items-center justify-center gap-2 rounded-full bg-gradient-cta px-7 text-sm font-medium text-white shadow-glow-purple transition-transform hover:scale-105 active:scale-95">
-              Explore R20
+            <a href="#explorer" className="group inline-flex h-12 items-center justify-center gap-2 rounded-full bg-gradient-cta px-7 text-sm font-medium text-white shadow-glow-purple transition-transform hover:scale-105 active:scale-95">
+              Start Exploring
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-            </button>
-            <button className="group inline-flex h-12 items-center justify-center gap-2 rounded-full border border-primary px-7 text-sm font-medium text-foreground transition-colors hover:bg-primary/10 active:scale-95">
-              Explore R23
+            </a>
+            <a href="#explorer" className="group inline-flex h-12 items-center justify-center gap-2 rounded-full border border-primary px-7 text-sm font-medium text-foreground transition-colors hover:bg-primary/10 active:scale-95">
+              How it works
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-            </button>
+            </a>
           </div>
 
           <p className="mt-6 text-sm text-text-muted">
