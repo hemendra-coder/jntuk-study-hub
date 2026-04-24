@@ -49,7 +49,7 @@ export function Hero() {
             <a href="#explorer" className="group inline-flex h-12 items-center justify-center gap-2 rounded-full border border-primary px-7 text-sm font-medium text-foreground transition-colors hover:bg-primary/10 active:scale-95">
               How it works
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-            </button>
+            </a>
           </div>
 
           <p className="mt-6 text-sm text-text-muted">
