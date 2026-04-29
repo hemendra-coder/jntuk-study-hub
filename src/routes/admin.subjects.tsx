@@ -94,8 +94,8 @@ function SubjectsPage() {
             sm.subjects.forEach((sub, idx) => {
               subjectRows.push({
                 branch_id,
-                year: yr.year,
-                semester: sm.semester,
+                year: yr.number,
+                semester: sm.number,
                 code: sub.code,
                 name: sub.name,
                 regulation: reg.code,
@@ -103,7 +103,7 @@ function SubjectsPage() {
               });
               sub.units.forEach((u, ui) => {
                 unitsToInsert.push({
-                  subjectKey: `${branch_id}|${reg.code}|${yr.year}|${sm.semester}|${sub.code}`,
+                  subjectKey: `${branch_id}|${reg.code}|${yr.number}|${sm.number}|${sub.code}`,
                   unit_number: ui + 1,
                   title: u.title,
                   topics: u.topics ?? [],
