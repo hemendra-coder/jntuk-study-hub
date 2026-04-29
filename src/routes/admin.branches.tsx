@@ -9,7 +9,13 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Plus, Pencil, Trash2 } from "lucide-react";
 import { toast } from "sonner";
-import { branches as seedBranches } from "@/data/jntukData";
+import { regulations } from "@/data/jntukData";
+
+const seedBranches = Array.from(
+  new Map(
+    regulations.flatMap((r) => r.branches).map((b) => [b.code, b])
+  ).values()
+);
 
 export const Route = createFileRoute("/admin/branches")({
   component: BranchesPage,
