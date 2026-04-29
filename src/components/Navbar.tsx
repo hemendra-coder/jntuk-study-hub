@@ -24,6 +24,8 @@ export function Navbar() {
   const [open, setOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [theme, setTheme] = useState<"dark" | "light">("dark");
+  const { user, isAdmin, signOut } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const t = getStoredTheme();
