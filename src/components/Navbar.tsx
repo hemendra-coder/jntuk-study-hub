@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { Link } from "@tanstack/react-router";
-import { GraduationCap, Search, Moon, Sun, Sparkles, Menu, X } from "lucide-react";
+import { Link, useNavigate } from "@tanstack/react-router";
+import { GraduationCap, Search, Moon, Sun, Sparkles, Menu, X, Shield, LogIn, LogOut } from "lucide-react";
 import {
   applyTheme,
   getStoredTheme,
@@ -8,6 +8,7 @@ import {
   scrollToId,
   toggleTheme,
 } from "@/lib/navActions";
+import { useAuth } from "@/lib/auth";
 
 type NavItem = { label: string; action: () => void };
 
@@ -23,6 +24,8 @@ export function Navbar() {
   const [open, setOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [theme, setTheme] = useState<"dark" | "light">("dark");
+  const { user, isAdmin, signOut } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const t = getStoredTheme();
@@ -82,6 +85,34 @@ export function Navbar() {
             <Sparkles className="h-4 w-4" />
             Ask AI
           </button>
+
+          {isAdmin && (
+            <Link
+              to="/admin"
+              className="ml-1 inline-flex h-10 items-center gap-1.5 rounded-full border border-border px-4 text-sm font-medium text-foreground hover:bg-card"
+            >
+              <Shield className="h-4 w-4" />
+              Admin
+            </Link>
+          )}
+          {user ? (
+            <button
+              onClick={() => signOut()}
+              className="ml-1 inline-flex h-10 items-center gap-1.5 rounded-full border border-border px-4 text-sm text-muted-foreground hover:bg-card hover:text-foreground"
+              title={user.email ?? ""}
+            >
+              <LogOut className="h-4 w-4" />
+              Sign out
+            </button>
+          ) : (
+            <button
+              onClick={() => navigate({ to: "/auth" })}
+              className="ml-1 inline-flex h-10 items-center gap-1.5 rounded-full border border-border px-4 text-sm font-medium text-foreground hover:bg-card"
+            >
+              <LogIn className="h-4 w-4" />
+              Sign in
+            </button>
+          )}
         </div>
 
         <button
