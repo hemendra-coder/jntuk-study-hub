@@ -79,7 +79,7 @@ function BranchesPage() {
     const rows = seedBranches.map((b, i) => ({
       code: b.code,
       name: b.name,
-      description: b.description ?? null,
+      description: null,
       sort_order: i,
     }));
     const { error } = await supabase.from("branches").upsert(rows, { onConflict: "code" });
