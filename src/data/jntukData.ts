@@ -1038,6 +1038,7 @@ const buildR23Branch = (
   code: string,
   name: string,
   emoji: string,
+  year1: Year,
   y2s1: Subject[],
   y2s2: Subject[],
 ): Branch => ({
@@ -1045,37 +1046,27 @@ const buildR23Branch = (
   name,
   emoji,
   years: [
-    R23_Year1,
-    {
-      number: 2,
-      label: "2nd Year",
-      semesters: [
-        { number: 1, subjects: y2s1 },
-        { number: 2, subjects: y2s2 },
-      ],
-    },
-    {
-      number: 3,
-      label: "3rd Year",
-      semesters: [
-        { number: 1, subjects: r23_Y3S1_skills },
-        { number: 2, subjects: r23_Y3S2_skills },
-      ],
-    },
+    year1,
+    { number: 2, label: "2nd Year", semesters: [{ number: 1, subjects: y2s1 }, { number: 2, subjects: y2s2 }] },
+    { number: 3, label: "3rd Year", semesters: [{ number: 1, subjects: r23_Y3S1_skills }, { number: 2, subjects: r23_Y3S2_skills }] },
     Y4_R23(code),
   ],
 });
 
+const R23_ElectricalCircuitAnalysisI = mkSubject("EE202", "Electrical Circuit Analysis – I", R23_NetworkAnalysis.units, 3);
+
 const r23Branches: Branch[] = [
-  buildR23Branch("CSE", "Computer Science Engineering", "💻", r23_cseLike_Y2S1, r23_cseLike_Y2S2),
-  buildR23Branch("IT", "Information Technology", "🖥️", r23_cseLike_Y2S1, r23_cseLike_Y2S2),
-  buildR23Branch("AIDS", "AI & Data Science", "🧠", r23_cseLike_Y2S1, r23_cseLike_Y2S2),
-  buildR23Branch("AIML", "AI & Machine Learning", "🤖", r23_cseLike_Y2S1, r23_cseLike_Y2S2),
-  buildR23Branch("DS", "Data Science", "📊", r23_cseLike_Y2S1, r23_cseLike_Y2S2),
-  buildR23Branch("ECE", "Electronics & Communication", "📡", r23_ece_Y2S1, r23_ece_Y2S2),
-  buildR23Branch("EEE", "Electrical & Electronics", "⚡", r23_eee_Y2S1, r23_eee_Y2S2),
-  buildR23Branch("MECH", "Mechanical Engineering", "⚙️", r23_mech_Y2S1, r23_mech_Y2S2),
-  buildR23Branch("CIVIL", "Civil Engineering", "🏗️", r23_civil_Y2S1, r23_civil_Y2S2),
+  // Group A
+  buildR23Branch("CSE", "Computer Science Engineering", "💻", R23_Year1_GroupA(R23_DataStructures), r23_cseLike_Y2S1, r23_cseLike_Y2S2),
+  buildR23Branch("EEE", "Electrical & Electronics", "⚡", R23_Year1_GroupA(R23_ElectricalCircuitAnalysisI), r23_eee_Y2S1, r23_eee_Y2S2),
+  // Group B
+  buildR23Branch("IT", "Information Technology", "🖥️", R23_Year1_GroupB(R23_DataStructures), r23_cseLike_Y2S1, r23_cseLike_Y2S2),
+  buildR23Branch("AIDS", "AI & Data Science", "🧠", R23_Year1_GroupB(R23_DataStructures), r23_cseLike_Y2S1, r23_cseLike_Y2S2),
+  buildR23Branch("AIML", "AI & Machine Learning", "🤖", R23_Year1_GroupB(R23_DataStructures), r23_cseLike_Y2S1, r23_cseLike_Y2S2),
+  buildR23Branch("DS", "Data Science", "📊", R23_Year1_GroupB(R23_DataStructures), r23_cseLike_Y2S1, r23_cseLike_Y2S2),
+  buildR23Branch("ECE", "Electronics & Communication", "📡", R23_Year1_GroupB(R23_NetworkAnalysis), r23_ece_Y2S1, r23_ece_Y2S2),
+  buildR23Branch("MECH", "Mechanical Engineering", "⚙️", R23_Year1_GroupB(R23_EngMechanics), r23_mech_Y2S1, r23_mech_Y2S2),
+  buildR23Branch("CIVIL", "Civil Engineering", "🏗️", R23_Year1_GroupB(R23_EngMechanics), r23_civil_Y2S1, r23_civil_Y2S2),
 ];
 
 export const regulations: Regulation[] = [
