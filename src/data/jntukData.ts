@@ -346,71 +346,570 @@ const r20Branches: Branch[] = [
 ];
 
 // ============================================================
-// R23 — Modern Foundation
+// R23 — 1st Year (verified from official JNTUK R23 Regulations PDF)
+// Group A = CSE, EEE, Chemical, Food Tech, Petroleum, Pharmaceutical Engg
+// Group B = Civil, Mech, Mining, Auto, Robotics, ECE & allied,
+//           CSE-Allied & IT (includes IT, AIDS, AIML, DS), Agriculture
 // ============================================================
-const R23_Y1S1: Subject[] = [
-  mkSubject("MA101", "Mathematics", [
-    mkUnit(1, "Basics", ["Matrices & determinants", "Linear equations", "Vector spaces basics"]),
-    mkUnit(2, "Tools", ["Calculus essentials", "Differentiation tools", "Integration techniques"]),
-    mkUnit(3, "Applications", ["Engineering applications", "Curve fitting", "Optimization basics"]),
-    mkUnit(4, "Problem Solving", ["Modeling problems", "Numerical methods overview", "Worked examples"]),
-    mkUnit(5, "Case Studies", ["Real-world data problems", "Industry case studies", "Mini exercises"]),
-  ], 4),
-  mkSubject("CS102", "Computational Thinking (Python)", [
-    mkUnit(1, "Basics", ["Python syntax", "Variables & data types", "Operators & I/O"]),
-    mkUnit(2, "Tools", ["Control flow", "Functions & modules", "List/dict/set/tuple"]),
-    mkUnit(3, "Applications", ["File handling", "Exception handling", "OOP basics"]),
-    mkUnit(4, "Problem Solving", ["Algorithmic thinking", "Recursion", "Standard libraries"]),
-    mkUnit(5, "Case Studies", ["NumPy/Pandas intro", "Data tasks", "Mini projects"]),
-  ], 3),
-  mkSubject("EX103", "Engineering Exploration", [
-    mkUnit(1, "Basics", ["Branches of engineering", "Engineering ethics", "Sustainability"]),
-    mkUnit(2, "Tools", ["Design thinking", "CAD/Tinkering basics", "Prototyping tools"]),
-    mkUnit(3, "Applications", ["Cross-domain projects", "Maker culture", "Hands-on exercises"]),
-    mkUnit(4, "Problem Solving", ["Identifying problems", "Ideation methods", "MVP approach"]),
-    mkUnit(5, "Case Studies", ["Industry showcases", "Startup case studies", "Team project"]),
-  ], 2),
-  mkSubject("PH104", "Physics / Chemistry", [
-    mkUnit(1, "Basics", ["Foundational principles", "Units & measurements", "Lab safety"]),
-    mkUnit(2, "Tools", ["Instruments & techniques", "Measurement standards", "Lab tools"]),
-    mkUnit(3, "Applications", ["Engineering materials", "Energy & devices", "Sensors"]),
-    mkUnit(4, "Problem Solving", ["Numerical problems", "Experimental analysis", "Error analysis"]),
-    mkUnit(5, "Case Studies", ["Industry use cases", "Research highlights", "Group activity"]),
-  ], 4),
+
+// Common subjects (identical content across both groups)
+const R23_CommunicativeEnglish = mkSubject("HS101", "Communicative English", [
+  mkUnit(1, "Human Values — Gift of the Magi", [
+    "Listening: identifying topic, context & specific information",
+    "Speaking: introducing self & others, general questions",
+    "Reading: skimming & scanning",
+    "Writing: capitalization, spellings, punctuation, parts of sentence",
+    "Grammar: parts of speech, basic sentence structures, forming questions",
+    "Vocabulary: synonyms, antonyms, affixes, root words",
+  ]),
+  mkUnit(2, "Nature — The Brook by Alfred Tennyson", [
+    "Listening for main & supporting ideas",
+    "Speaking: pair/group discussion, short structured talks",
+    "Reading: identifying sequence of ideas, verbal techniques",
+    "Writing: structure of a paragraph, paragraph writing",
+    "Grammar: cohesive devices (linkers), articles, prepositions",
+    "Vocabulary: homonyms, homophones, homographs",
+  ]),
+  mkUnit(3, "Biography — Elon Musk", [
+    "Listening for global comprehension & summarizing",
+    "Speaking: discussing topics & reporting in pairs/groups",
+    "Reading: detailed reading, basic inferences, context clues",
+    "Writing: summarizing, note-making, paraphrasing",
+    "Grammar: tenses, subject-verb agreement",
+    "Vocabulary: compound words, collocations",
+  ]),
+  mkUnit(4, "Inspiration — The Toys of Peace by Saki", [
+    "Listening: making predictions during conversations / video",
+    "Speaking: role plays for academic conversational English",
+    "Reading: graphic elements in texts (charts, trends, processes)",
+    "Writing: official letters, resumes",
+    "Grammar: reporting verbs, direct & indirect speech, active & passive voice",
+    "Vocabulary: words often confused, jargons",
+  ]),
+  mkUnit(5, "Motivation — The Power of Intrapersonal Communication", [
+    "Listening: identifying key terms & concepts",
+    "Speaking: formal oral presentations on academic topics",
+    "Reading: reading comprehension",
+    "Writing: structured essay writing",
+    "Grammar: editing texts, common errors (articles, prepositions, tenses, SVA)",
+    "Vocabulary: technical jargons",
+  ]),
+], 2);
+
+const R23_LinearAlgebraCalculus = mkSubject("MA102", "Linear Algebra & Calculus", [
+  mkUnit(1, "Matrices", [
+    "Rank of a matrix by echelon form & normal form",
+    "Cauchy–Binet formulae (without proof)",
+    "Inverse of non-singular matrices by Gauss-Jordan method",
+    "System of linear equations: homogeneous & non-homogeneous (Gauss elimination)",
+    "Iterative methods: Jacobi & Gauss-Seidel",
+  ]),
+  mkUnit(2, "Eigenvalues, Eigenvectors and Orthogonal Transformation", [
+    "Eigenvalues, eigenvectors and their properties",
+    "Diagonalization of a matrix",
+    "Cayley-Hamilton theorem (without proof) — inverse and powers",
+    "Quadratic forms and their nature",
+    "Reduction of quadratic form to canonical form by orthogonal transformation",
+  ]),
+  mkUnit(3, "Calculus", [
+    "Rolle's theorem",
+    "Lagrange's mean value theorem (geometrical interpretation)",
+    "Cauchy's mean value theorem",
+    "Taylor's & Maclaurin's theorems with remainders (without proof)",
+    "Problems and applications of mean value theorems",
+  ]),
+  mkUnit(4, "Partial Differentiation & Applications (Multi-variable Calculus)", [
+    "Functions of several variables — continuity & differentiability",
+    "Partial derivatives, total derivatives, chain rule",
+    "Directional derivative; Taylor's & Maclaurin's series for two variables",
+    "Jacobians & functional dependence",
+    "Maxima & minima of functions of two variables; Lagrange multipliers",
+  ]),
+  mkUnit(5, "Multiple Integrals (Multi-variable Calculus)", [
+    "Double integrals & triple integrals",
+    "Change of order of integration",
+    "Change of variables to polar, cylindrical & spherical coordinates",
+    "Areas using double integrals",
+    "Volumes using double & triple integrals",
+  ]),
+], 3);
+
+const R23_DEVC = mkSubject("MA201", "Differential Equations & Vector Calculus", [
+  mkUnit(1, "Differential Equations of First Order and First Degree", [
+    "Linear differential equations",
+    "Bernoulli's equations",
+    "Exact equations & equations reducible to exact form",
+    "Applications: Newton's law of cooling",
+    "Applications: law of natural growth & decay; electrical circuits",
+  ]),
+  mkUnit(2, "Linear Differential Equations of Higher Order (Constant Coefficients)", [
+    "Definitions; homogeneous & non-homogeneous; complementary function",
+    "General solution & particular integral; Wronskian",
+    "Method of variation of parameters",
+    "Simultaneous linear equations",
+    "Applications: L-C-R circuit problems & simple harmonic motion",
+  ]),
+  mkUnit(3, "Partial Differential Equations", [
+    "Formation of PDEs by elimination of arbitrary constants",
+    "Formation of PDEs by elimination of arbitrary functions",
+    "Solutions of first order linear equations — Lagrange's method",
+    "Homogeneous linear PDEs with constant coefficients",
+    "Standard problems",
+  ]),
+  mkUnit(4, "Vector Differentiation", [
+    "Scalar and vector point functions",
+    "Vector operator Del; gradient & directional derivative",
+    "Divergence & Curl",
+    "Vector identities",
+    "Physical interpretations",
+  ]),
+  mkUnit(5, "Vector Integration", [
+    "Line integral — circulation & work done",
+    "Surface integral — flux",
+    "Green's theorem in the plane (without proof)",
+    "Stokes' theorem (without proof)",
+    "Volume integral; Divergence theorem (without proof) & related problems",
+  ]),
+], 3);
+
+const R23_EngineeringPhysics = mkSubject("PH101", "Engineering Physics", [
+  mkUnit(1, "Wave Optics", [
+    "Interference: principle of superposition; thin film interference",
+    "Newton's rings — wavelength & refractive index determination",
+    "Diffraction: Fresnel & Fraunhofer; single, double & N-slits",
+    "Diffraction grating — dispersive & resolving power (qualitative)",
+    "Polarization: by reflection, refraction, double refraction; Nicol's prism; half/quarter wave plates",
+  ]),
+  mkUnit(2, "Crystallography and X-ray Diffraction", [
+    "Space lattice, basis, unit cell, lattice parameters",
+    "Bravais lattices; crystal systems (3D)",
+    "Coordination number & packing fraction of SC, BCC, FCC",
+    "Miller indices; separation between (hkl) planes",
+    "Bragg's law; X-ray diffractometer; Laue's & powder methods",
+  ]),
+  mkUnit(3, "Dielectric and Magnetic Materials", [
+    "Dielectric polarization; polarizability, susceptibility, dielectric constant",
+    "Types of polarization (electronic, ionic, orientation); Lorentz internal field; Clausius-Mossotti equation",
+    "Frequency dependence of polarization; dielectric loss",
+    "Magnetic dipole moment, magnetization, susceptibility & permeability",
+    "Classification of magnetic materials; domain concept; hysteresis; soft & hard magnetic materials",
+  ]),
+  mkUnit(4, "Quantum Mechanics and Free Electron Theory", [
+    "Dual nature of matter; Heisenberg's uncertainty principle",
+    "Wave function — significance & properties",
+    "Schrödinger's time-independent & time-dependent wave equations",
+    "Particle in a one-dimensional infinite potential well",
+    "Classical & quantum free electron theory; Fermi-Dirac distribution; density of states; Fermi energy",
+  ]),
+  mkUnit(5, "Semiconductors", [
+    "Formation of energy bands; classification of crystalline solids",
+    "Intrinsic semiconductors: density of charge carriers, conductivity, Fermi level",
+    "Extrinsic semiconductors: density of charge carriers, dependence of Fermi energy",
+    "Drift & diffusion currents; Einstein's equation",
+    "Hall effect and its applications",
+  ]),
+], 3);
+
+// Engineering Chemistry — for Civil, Chemical, Mechanical & allied (Group B mech-side)
+const R23_EngineeringChemistry = mkSubject("CH101", "Engineering Chemistry", [
+  mkUnit(1, "Water Technology", [
+    "Soft & hard water; estimation of hardness by EDTA method",
+    "Estimation of dissolved oxygen",
+    "Boiler troubles: priming, foaming, scale & sludge, caustic embrittlement",
+    "Industrial water treatment; BIS & WHO standards for drinking water",
+    "Ion-exchange processes; desalination — reverse osmosis & electrodialysis",
+  ]),
+  mkUnit(2, "Electrochemistry and Applications", [
+    "Electrodes, electrochemical cell, Nernst equation, cell potential",
+    "Primary cells (Zinc-air); secondary cells (Ni-Cd, Li-ion)",
+    "Fuel cells — hydrogen-oxygen fuel cell",
+    "Corrosion theory; differential aeration & galvanic corrosion; Pilling-Bedworth ratio",
+    "Cathodic & anodic protection; electroplating & electroless plating (Ni, Cu)",
+  ]),
+  mkUnit(3, "Polymers and Fuel Chemistry", [
+    "Polymers: functionality, chain & step growth polymerization",
+    "Thermoplastics & thermosetting plastics — polystyrene, PVC, Nylon-6,6, Bakelite",
+    "Elastomers — Buna-S, Buna-N, Thiokol rubbers",
+    "Fuels: types, calorific value, proximate & ultimate analysis of coal",
+    "Liquid fuels: refining of petroleum, octane & cetane number; alternative fuels (propane, methanol, ethanol, biodiesel)",
+  ]),
+  mkUnit(4, "Modern Engineering Materials", [
+    "Composites: constituents, particle/fibre/structural reinforced, applications",
+    "Refractories: classification, properties, applications",
+    "Lubricants: classification, mechanism, properties (viscosity, flash, fire, cloud points)",
+    "Building materials: Portland cement constituents, setting & hardening",
+    "Engineering applications & selection",
+  ]),
+  mkUnit(5, "Surface Chemistry and Nanomaterials", [
+    "Colloids; nanometals & nanometal oxides; micelle formation",
+    "Synthesis of colloids (Bragg's method)",
+    "Chemical & biological methods of preparing nanometals/oxides",
+    "Adsorption isotherms (Freundlich, Langmuir); BET equation",
+    "Applications of colloids & nanomaterials — catalysis, medicine, sensors",
+  ]),
+], 3);
+
+// Chemistry — for EEE, ECE, CSE, IT & allied
+const R23_Chemistry = mkSubject("CH102", "Chemistry", [
+  mkUnit(1, "Structure and Bonding Models", [
+    "Fundamentals of quantum mechanics; Schrödinger wave equation",
+    "Significance of Ψ and Ψ²; particle in a 1D box",
+    "Molecular orbital theory — homo & heteronuclear diatomic molecules",
+    "Energy level diagrams of O₂ and CO",
+    "π-molecular orbitals of butadiene & benzene; bond order calculation",
+  ]),
+  mkUnit(2, "Modern Engineering Materials", [
+    "Semiconductors — basic concepts & applications",
+    "Superconductors — basic concepts & applications",
+    "Supercapacitors — classification & applications",
+    "Nanomaterials: classification, properties",
+    "Fullerenes, carbon nanotubes & graphene nanoparticles",
+  ]),
+  mkUnit(3, "Electrochemistry and Applications", [
+    "Electrochemical cell, Nernst equation, cell potential",
+    "Potentiometry & potentiometric titrations (redox)",
+    "Conductivity, conductivity cell, conductometric titrations",
+    "Electrochemical sensors — potentiometric & amperometric",
+    "Batteries — Zn-air, Li-ion; fuel cells (PEMFC)",
+  ]),
+  mkUnit(4, "Polymer Chemistry", [
+    "Polymers — functionality, chain growth, step growth, coordination polymerization",
+    "Plastics — PVC, Teflon, Bakelite, Nylon-6,6, carbon fibres",
+    "Elastomers — Buna-S, Buna-N",
+    "Conducting polymers — polyacetylene, polyaniline (mechanism)",
+    "Bio-degradable polymers — PGA, PLA",
+  ]),
+  mkUnit(5, "Instrumental Methods and Applications", [
+    "Electromagnetic spectrum; Beer-Lambert's law",
+    "UV-Visible spectroscopy — electronic transitions, instrumentation",
+    "IR spectroscopy — fundamental modes, selection rules, instrumentation",
+    "Chromatography — basic principle & classification",
+    "HPLC — principle, instrumentation, applications",
+  ]),
+], 3);
+
+const R23_BasicCivilMech = mkSubject("CE101", "Basic Civil & Mechanical Engineering", [
+  mkUnit(1, "Basics of Civil Engineering", [
+    "Role of civil engineers in society; disciplines of civil engineering",
+    "Structural, geotechnical, transportation, hydraulics & water resources, environmental engineering",
+    "Building construction & planning",
+    "Construction materials — cement, aggregate, bricks, cement concrete, steel",
+    "Introduction to prefabricated construction techniques",
+  ]),
+  mkUnit(2, "Surveying", [
+    "Objectives of surveying",
+    "Horizontal measurements; angular measurements",
+    "Introduction to bearings",
+    "Levelling instruments; simple problems on levelling & bearings",
+    "Contour mapping",
+  ]),
+  mkUnit(3, "Transportation Engineering", [
+    "Importance of transportation in nation's economic development",
+    "Types of highway pavements — flexible vs rigid (differences)",
+    "Basics of harbour engineering",
+    "Basics of tunnel & airport engineering",
+    "Basics of railway engineering",
+  ]),
+  mkUnit(4, "Basics of Mechanical Engineering", [
+    "Introduction to mechanical engineering disciplines",
+    "Thermal engineering basics",
+    "Manufacturing processes overview",
+    "Power transmission elements",
+    "IC engines — overview",
+  ]),
+  mkUnit(5, "Mechanical Engineering Applications", [
+    "Refrigeration & air conditioning basics",
+    "Renewable energy sources",
+    "Robotics & automation overview",
+    "Industry 4.0 introduction",
+    "Case studies",
+  ]),
+], 3);
+
+const R23_BasicEEE = mkSubject("EE101", "Basic Electrical & Electronics Engineering", [
+  mkUnit(1, "DC Circuits", [
+    "Ohm's law & Kirchhoff's laws (KCL, KVL)",
+    "Series & parallel resistive circuits",
+    "Mesh & nodal analysis",
+    "Star-delta transformation",
+    "Network theorems (Thevenin, Norton, Superposition)",
+  ]),
+  mkUnit(2, "AC Circuits", [
+    "AC fundamentals — RMS, average, form & peak factor",
+    "Single-phase RLC series & parallel circuits",
+    "Phasor diagrams; power, power factor",
+    "Resonance in series & parallel circuits",
+    "Three-phase systems — star & delta connections",
+  ]),
+  mkUnit(3, "DC & AC Machines", [
+    "DC generators — construction, EMF equation, types",
+    "DC motors — types, characteristics, applications",
+    "Single-phase & three-phase transformers — EMF equation, regulation, efficiency",
+    "Three-phase induction motor — principle, types, applications",
+    "Alternators — basics",
+  ]),
+  mkUnit(4, "Semiconductor Devices", [
+    "PN junction diode — V-I characteristics",
+    "Half-wave & full-wave rectifiers; filters",
+    "Zener diode & voltage regulation",
+    "BJT — construction, configurations, characteristics",
+    "FET / MOSFET basics",
+  ]),
+  mkUnit(5, "Digital Electronics", [
+    "Number systems & codes",
+    "Boolean algebra & logic gates",
+    "Combinational circuits — adders, multiplexers, decoders",
+    "Sequential circuits — flip-flops, registers, counters",
+    "Introduction to microprocessors",
+  ]),
+], 3);
+
+const R23_IntroProgramming = mkSubject("CS101", "Introduction to Programming", [
+  mkUnit(1, "Introduction to Programming & C Basics", [
+    "Computer fundamentals; algorithm & flowchart",
+    "Structure of a C program",
+    "Data types, variables, constants; identifiers & keywords",
+    "Operators & expressions; type conversion",
+    "Input/output statements",
+  ]),
+  mkUnit(2, "Control Statements", [
+    "Conditional statements — if, if-else, nested if, switch",
+    "Iterative statements — for, while, do-while",
+    "break, continue, goto",
+    "Nested loops",
+    "Sample programs",
+  ]),
+  mkUnit(3, "Arrays, Strings & Functions", [
+    "1D and 2D arrays — declaration, initialization, operations",
+    "Strings & string handling functions",
+    "Functions — definition, declaration, calling",
+    "Parameter passing — call by value & call by reference",
+    "Recursion; storage classes; scope & lifetime",
+  ]),
+  mkUnit(4, "Pointers & Structures", [
+    "Pointer basics — declaration, initialization",
+    "Pointers & arrays; pointer arithmetic",
+    "Dynamic memory allocation (malloc, calloc, realloc, free)",
+    "Structures — declaration, nested structures, array of structures",
+    "Unions; enumerations",
+  ]),
+  mkUnit(5, "File Handling & Preprocessor", [
+    "File handling — opening, closing, reading, writing",
+    "Sequential vs random access files",
+    "Command line arguments",
+    "Preprocessor directives — #include, #define, macros",
+    "Conditional compilation; sample applications",
+  ]),
+], 3);
+
+const R23_EngineeringGraphics = mkSubject("ME102", "Engineering Graphics", [
+  mkUnit(1, "Introduction & Engineering Curves", [
+    "Drawing instruments & their uses",
+    "Lettering, dimensioning, lines & scales",
+    "Conic sections — ellipse, parabola, hyperbola (general methods)",
+    "Cycloidal curves — cycloid, epicycloid, hypocycloid",
+    "Involute of a circle",
+  ]),
+  mkUnit(2, "Orthographic Projections", [
+    "Principles of orthographic projection; first & third angle",
+    "Projection of points in different quadrants",
+    "Projection of straight lines — parallel, perpendicular, inclined to one/both planes",
+    "Traces of lines",
+    "True length & true inclination",
+  ]),
+  mkUnit(3, "Projections of Planes & Solids", [
+    "Projection of planes — perpendicular & inclined to one/both planes",
+    "Projection of regular solids (prism, pyramid, cylinder, cone) in simple positions",
+    "Projection of solids with axis inclined to one plane",
+    "Projection of solids with axis inclined to both planes",
+    "Auxiliary projections (introduction)",
+  ]),
+  mkUnit(4, "Sections & Development of Surfaces", [
+    "Section of solids — sectional views, true shape of section",
+    "Cutting plane perpendicular to one plane and inclined to another",
+    "Development of surfaces — prisms & cylinders",
+    "Development of pyramids & cones",
+    "Development of truncated solids",
+  ]),
+  mkUnit(5, "Isometric & Orthographic Conversions", [
+    "Isometric projection — principles & isometric scale",
+    "Isometric views of planes & simple solids",
+    "Conversion of isometric views into orthographic views",
+    "Conversion of orthographic views into isometric views",
+    "Introduction to computer-aided drafting (AutoCAD)",
+  ]),
+], 3);
+
+const R23_DataStructures = mkSubject("CS202", "Data Structures", [
+  mkUnit(1, "Introduction to Data Structures", [
+    "Significance of data structures; classification",
+    "Time & space complexity; asymptotic notations (Big-O, Ω, Θ)",
+    "Arrays — operations, applications",
+    "Searching — linear & binary search",
+    "Sorting — bubble, selection, insertion sort",
+  ]),
+  mkUnit(2, "Linked Lists", [
+    "Singly linked list — creation, insertion, deletion, traversal",
+    "Doubly linked list — operations",
+    "Circular linked list — operations",
+    "Applications of linked lists",
+    "Polynomial representation & arithmetic",
+  ]),
+  mkUnit(3, "Stacks and Queues", [
+    "Stack ADT — array & linked list implementation",
+    "Applications — infix to postfix, expression evaluation, parentheses matching",
+    "Queue ADT — array & linked list implementation",
+    "Circular queue, double-ended queue (deque)",
+    "Priority queue",
+  ]),
+  mkUnit(4, "Trees", [
+    "Tree terminology; binary trees & their representation",
+    "Tree traversals — inorder, preorder, postorder, level order",
+    "Binary search tree — operations",
+    "AVL trees; B-trees (introduction)",
+    "Heap; heap sort",
+  ]),
+  mkUnit(5, "Graphs & Hashing", [
+    "Graph representations — adjacency matrix & list",
+    "Graph traversals — BFS & DFS",
+    "Shortest path — Dijkstra's algorithm",
+    "Minimum spanning tree — Prim's & Kruskal's algorithms",
+    "Hashing — hash functions, collision resolution techniques",
+  ]),
+], 3);
+
+const R23_EngMechanics = mkSubject("ME203", "Engineering Mechanics", [
+  mkUnit(1, "System of Forces", [
+    "Introduction to engineering mechanics; system of forces",
+    "Resultant of coplanar concurrent forces",
+    "Resolution of forces; equilibrium of concurrent force systems",
+    "Moment of a force; Varignon's theorem",
+    "Couples; equilibrium of non-concurrent force systems",
+  ]),
+  mkUnit(2, "Friction & Centroid", [
+    "Friction — laws, types, angle of friction & repose",
+    "Wedge & ladder friction; belt friction",
+    "Centroid of plane figures — composite areas",
+    "Centroid by integration",
+    "Centre of gravity of solids",
+  ]),
+  mkUnit(3, "Moment of Inertia", [
+    "Area moment of inertia — definition",
+    "Parallel & perpendicular axis theorems",
+    "Moment of inertia of standard sections",
+    "Mass moment of inertia of solids",
+    "Polar moment of inertia",
+  ]),
+  mkUnit(4, "Kinematics of Particles", [
+    "Rectilinear motion — uniform & uniformly accelerated motion",
+    "Curvilinear motion — projectile motion",
+    "Normal & tangential components",
+    "Relative motion",
+    "Kinematics of rigid bodies — translation & rotation",
+  ]),
+  mkUnit(5, "Kinetics & Work-Energy", [
+    "Newton's second law — equations of motion",
+    "D'Alembert's principle",
+    "Work-energy principle for particles & rigid bodies",
+    "Impulse-momentum principle",
+    "Collision of elastic bodies",
+  ]),
+], 3);
+
+const R23_NetworkAnalysis = mkSubject("EC202", "Network Analysis", [
+  mkUnit(1, "Network Elements & Laws", [
+    "Network elements — R, L, C; sources (independent & dependent)",
+    "Source transformations",
+    "Kirchhoff's laws (KCL, KVL); mesh & nodal analysis",
+    "Star-delta & delta-star transformation",
+    "Network topology — graph, tree, cut-set, tie-set",
+  ]),
+  mkUnit(2, "Network Theorems", [
+    "Superposition theorem",
+    "Thevenin's & Norton's theorems",
+    "Maximum power transfer theorem",
+    "Reciprocity & Millman's theorems",
+    "Compensation theorem",
+  ]),
+  mkUnit(3, "Transient & Steady-State Analysis", [
+    "Transient response of RL, RC, RLC circuits — DC excitation",
+    "Initial conditions",
+    "Sinusoidal steady-state analysis",
+    "Phasor representation; impedance & admittance",
+    "Power in AC circuits — real, reactive, apparent",
+  ]),
+  mkUnit(4, "Resonance & Coupled Circuits", [
+    "Series & parallel resonance",
+    "Q-factor, bandwidth, selectivity",
+    "Coupled circuits — self & mutual inductance",
+    "Coefficient of coupling; dot convention",
+    "Analysis of coupled circuits",
+  ]),
+  mkUnit(5, "Two-Port Networks & Three-Phase", [
+    "Two-port network parameters — Z, Y, h, ABCD",
+    "Inter-relationships of parameters",
+    "Three-phase circuits — balanced & unbalanced loads",
+    "Star & delta connections; line & phase quantities",
+    "Power measurement in three-phase circuits",
+  ]),
+], 3);
+
+// ----- Group A: Y1S1 (Chemistry + Programming first) -----
+// CSE, EEE, Chemical, Food Tech, Petroleum, Pharmaceutical
+const R23_GroupA_Y1S1: Subject[] = [
+  R23_CommunicativeEnglish,
+  R23_Chemistry, // Note: EEE/CSE use "Chemistry"; allied branches may use Eng. Chemistry/Fundamental
+  R23_LinearAlgebraCalculus,
+  R23_BasicCivilMech,
+  R23_IntroProgramming,
 ];
 
-const R23_Y1S2: Subject[] = [
-  mkSubject("DS201", "Data Science Basics", [
-    mkUnit(1, "Basics", ["What is data science?", "Data types & sources", "Data lifecycle"]),
-    mkUnit(2, "Tools", ["Python for DS", "Pandas & NumPy", "Visualization basics"]),
-    mkUnit(3, "Applications", ["EDA", "Cleaning & preprocessing", "Feature engineering"]),
-    mkUnit(4, "Problem Solving", ["Statistical inference", "Hypothesis testing", "Intro to ML"]),
-    mkUnit(5, "Case Studies", ["End-to-end mini project", "Domain examples", "Ethics in DS"]),
-  ], 3),
-  mkSubject("EC202", "Basic Electronics", [
-    mkUnit(1, "Basics", ["Semiconductors", "Diodes", "Rectifiers"]),
-    mkUnit(2, "Tools", ["BJT & FET basics", "Biasing", "Small-signal models"]),
-    mkUnit(3, "Applications", ["Amplifiers", "Op-amp basics", "Filters"]),
-    mkUnit(4, "Problem Solving", ["Logic gates", "Combinational circuits", "Sequential circuits"]),
-    mkUnit(5, "Case Studies", ["Embedded examples", "IoT prototypes", "Industry use cases"]),
-  ], 3),
-  mkSubject("ME203", "Engineering Mechanics", [
-    mkUnit(1, "Basics", ["Force systems", "Equilibrium", "Free body diagrams"]),
-    mkUnit(2, "Tools", ["Friction", "Centroid & moment of inertia", "Trusses"]),
-    mkUnit(3, "Applications", ["Beams & supports", "Structural problems", "Machinery basics"]),
-    mkUnit(4, "Problem Solving", ["Kinematics of particles", "Kinetics", "Work-energy methods"]),
-    mkUnit(5, "Case Studies", ["Mechanical design examples", "Civil structures", "Group exercise"]),
-  ], 3),
+// ----- Group A: Y1S2 (Physics + Engg Graphics + branch-specific PC) -----
+const R23_GroupA_Y1S2 = (branchPC: Subject): Subject[] => [
+  R23_EngineeringPhysics,
+  R23_DEVC,
+  R23_BasicEEE,
+  R23_EngineeringGraphics,
+  branchPC, // Data Structures (CSE) / Electrical Circuit Analysis-I (EEE)
 ];
 
-const R23_Year1: Year = {
+// ----- Group B: Y1S1 (Physics + Maths-I first) -----
+// Civil, Mech, Mining, Auto, Robotics, ECE & allied, IT/AIDS/AIML/DS, Agriculture
+const R23_GroupB_Y1S1: Subject[] = [
+  R23_EngineeringPhysics,
+  R23_LinearAlgebraCalculus,
+  R23_BasicEEE,
+  R23_EngineeringGraphics,
+  R23_IntroProgramming,
+];
+
+// ----- Group B: Y1S2 (Chemistry + Maths-II + branch-specific PC) -----
+const R23_GroupB_Y1S2 = (branchPC: Subject): Subject[] => [
+  R23_CommunicativeEnglish,
+  R23_EngineeringChemistry, // Civil/Mech use Eng. Chemistry; CSE-allied/ECE use "Chemistry" — keeping Eng. Chemistry as default
+  R23_DEVC,
+  R23_BasicCivilMech,
+  branchPC, // Engineering Mechanics / Network Analysis / Data Structures
+];
+
+// Branch-specific Year 1 builders (Group A or B + correct PC subject in 1-2)
+const R23_Year1_GroupA = (branchPC_1_2: Subject): Year => ({
   number: 1,
   label: "1st Year",
   semesters: [
-    { number: 1, subjects: R23_Y1S1 },
-    { number: 2, subjects: R23_Y1S2 },
+    { number: 1, subjects: R23_GroupA_Y1S1 },
+    { number: 2, subjects: R23_GroupA_Y1S2(branchPC_1_2) },
   ],
-};
+});
+
+const R23_Year1_GroupB = (branchPC_1_2: Subject): Year => ({
+  number: 1,
+  label: "1st Year",
+  semesters: [
+    { number: 1, subjects: R23_GroupB_Y1S1 },
+    { number: 2, subjects: R23_GroupB_Y1S2(branchPC_1_2) },
+  ],
+});
 
 // R23 2nd Year
 const r23_cseLike_Y2S1: Subject[] = [
@@ -539,6 +1038,7 @@ const buildR23Branch = (
   code: string,
   name: string,
   emoji: string,
+  year1: Year,
   y2s1: Subject[],
   y2s2: Subject[],
 ): Branch => ({
@@ -546,37 +1046,27 @@ const buildR23Branch = (
   name,
   emoji,
   years: [
-    R23_Year1,
-    {
-      number: 2,
-      label: "2nd Year",
-      semesters: [
-        { number: 1, subjects: y2s1 },
-        { number: 2, subjects: y2s2 },
-      ],
-    },
-    {
-      number: 3,
-      label: "3rd Year",
-      semesters: [
-        { number: 1, subjects: r23_Y3S1_skills },
-        { number: 2, subjects: r23_Y3S2_skills },
-      ],
-    },
+    year1,
+    { number: 2, label: "2nd Year", semesters: [{ number: 1, subjects: y2s1 }, { number: 2, subjects: y2s2 }] },
+    { number: 3, label: "3rd Year", semesters: [{ number: 1, subjects: r23_Y3S1_skills }, { number: 2, subjects: r23_Y3S2_skills }] },
     Y4_R23(code),
   ],
 });
 
+const R23_ElectricalCircuitAnalysisI = mkSubject("EE202", "Electrical Circuit Analysis – I", R23_NetworkAnalysis.units, 3);
+
 const r23Branches: Branch[] = [
-  buildR23Branch("CSE", "Computer Science Engineering", "💻", r23_cseLike_Y2S1, r23_cseLike_Y2S2),
-  buildR23Branch("IT", "Information Technology", "🖥️", r23_cseLike_Y2S1, r23_cseLike_Y2S2),
-  buildR23Branch("AIDS", "AI & Data Science", "🧠", r23_cseLike_Y2S1, r23_cseLike_Y2S2),
-  buildR23Branch("AIML", "AI & Machine Learning", "🤖", r23_cseLike_Y2S1, r23_cseLike_Y2S2),
-  buildR23Branch("DS", "Data Science", "📊", r23_cseLike_Y2S1, r23_cseLike_Y2S2),
-  buildR23Branch("ECE", "Electronics & Communication", "📡", r23_ece_Y2S1, r23_ece_Y2S2),
-  buildR23Branch("EEE", "Electrical & Electronics", "⚡", r23_eee_Y2S1, r23_eee_Y2S2),
-  buildR23Branch("MECH", "Mechanical Engineering", "⚙️", r23_mech_Y2S1, r23_mech_Y2S2),
-  buildR23Branch("CIVIL", "Civil Engineering", "🏗️", r23_civil_Y2S1, r23_civil_Y2S2),
+  // Group A
+  buildR23Branch("CSE", "Computer Science Engineering", "💻", R23_Year1_GroupA(R23_DataStructures), r23_cseLike_Y2S1, r23_cseLike_Y2S2),
+  buildR23Branch("EEE", "Electrical & Electronics", "⚡", R23_Year1_GroupA(R23_ElectricalCircuitAnalysisI), r23_eee_Y2S1, r23_eee_Y2S2),
+  // Group B
+  buildR23Branch("IT", "Information Technology", "🖥️", R23_Year1_GroupB(R23_DataStructures), r23_cseLike_Y2S1, r23_cseLike_Y2S2),
+  buildR23Branch("AIDS", "AI & Data Science", "🧠", R23_Year1_GroupB(R23_DataStructures), r23_cseLike_Y2S1, r23_cseLike_Y2S2),
+  buildR23Branch("AIML", "AI & Machine Learning", "🤖", R23_Year1_GroupB(R23_DataStructures), r23_cseLike_Y2S1, r23_cseLike_Y2S2),
+  buildR23Branch("DS", "Data Science", "📊", R23_Year1_GroupB(R23_DataStructures), r23_cseLike_Y2S1, r23_cseLike_Y2S2),
+  buildR23Branch("ECE", "Electronics & Communication", "📡", R23_Year1_GroupB(R23_NetworkAnalysis), r23_ece_Y2S1, r23_ece_Y2S2),
+  buildR23Branch("MECH", "Mechanical Engineering", "⚙️", R23_Year1_GroupB(R23_EngMechanics), r23_mech_Y2S1, r23_mech_Y2S2),
+  buildR23Branch("CIVIL", "Civil Engineering", "🏗️", R23_Year1_GroupB(R23_EngMechanics), r23_civil_Y2S1, r23_civil_Y2S2),
 ];
 
 export const regulations: Regulation[] = [
