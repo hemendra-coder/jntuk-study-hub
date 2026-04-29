@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { Link } from "@tanstack/react-router";
-import { GraduationCap, Search, Moon, Sun, Sparkles, Menu, X } from "lucide-react";
+import { Link, useNavigate } from "@tanstack/react-router";
+import { GraduationCap, Search, Moon, Sun, Sparkles, Menu, X, Shield, LogIn, LogOut } from "lucide-react";
 import {
   applyTheme,
   getStoredTheme,
@@ -8,6 +8,7 @@ import {
   scrollToId,
   toggleTheme,
 } from "@/lib/navActions";
+import { useAuth } from "@/lib/auth";
 
 type NavItem = { label: string; action: () => void };
 
