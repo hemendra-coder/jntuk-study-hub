@@ -19,7 +19,6 @@ export const Route = createFileRoute("/admin")({
 
 const navItems = [
   { to: "/admin", label: "Dashboard", icon: LayoutDashboard, exact: true },
-  { to: "/admin/branches", label: "Branches", icon: GitBranch },
   { to: "/admin/subjects", label: "Subjects", icon: BookOpen },
   { to: "/admin/units", label: "Units", icon: ListTree },
   { to: "/admin/pdfs", label: "PDFs", icon: FileText },
