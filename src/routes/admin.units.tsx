@@ -15,7 +15,7 @@ export const Route = createFileRoute("/admin/units")({
   component: UnitsPage,
 });
 
-interface SubjectRow { id: string; code: string; name: string; year: number; semester: number; branch_id: string }
+interface SubjectRow { id: string; code: string; name: string; year: number | null }
 interface Unit { id: string; subject_id: string; unit_number: number; title: string; topics: string[] }
 
 function UnitsPage() {
@@ -27,7 +27,7 @@ function UnitsPage() {
 
   const load = async () => {
     const [{ data: s }, { data: u }] = await Promise.all([
-      supabase.from("subjects").select("id, code, name, year, semester, branch_id").order("name"),
+      supabase.from("subjects").select("id, code, name, year").order("name"),
       supabase.from("units").select("*").order("subject_id").order("unit_number"),
     ]);
     setSubjects((s ?? []) as SubjectRow[]);
@@ -71,7 +71,7 @@ function UnitsPage() {
               <div><Label>Subject</Label>
                 <Select value={editing?.subject_id} onValueChange={(v) => setEditing({ ...editing, subject_id: v })}>
                   <SelectTrigger><SelectValue placeholder="Pick subject" /></SelectTrigger>
-                  <SelectContent>{subjects.map((s) => <SelectItem key={s.id} value={s.id}>{s.code} — {s.name} (Y{s.year}S{s.semester})</SelectItem>)}</SelectContent>
+                  <SelectContent>{subjects.map((s) => <SelectItem key={s.id} value={s.id}>{s.code} — {s.name}{s.year ? ` (Year ${s.year})` : ""}</SelectItem>)}</SelectContent>
                 </Select>
               </div>
               <div><Label>Unit number</Label><Input type="number" min={1} value={editing?.unit_number ?? 1} onChange={(e) => setEditing({ ...editing, unit_number: Number(e.target.value) })} /></div>
