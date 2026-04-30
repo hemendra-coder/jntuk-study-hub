@@ -184,37 +184,37 @@ export type Database = {
       }
       subjects: {
         Row: {
-          branch_id: string
+          branch_id: string | null
           code: string
           created_at: string
           id: string
           name: string
           regulation: string
-          semester: number
+          semester: number | null
           sort_order: number
           updated_at: string
           year: number
         }
         Insert: {
-          branch_id: string
+          branch_id?: string | null
           code: string
           created_at?: string
           id?: string
           name: string
           regulation?: string
-          semester: number
+          semester?: number | null
           sort_order?: number
           updated_at?: string
           year: number
         }
         Update: {
-          branch_id?: string
+          branch_id?: string | null
           code?: string
           created_at?: string
           id?: string
           name?: string
           regulation?: string
-          semester?: number
+          semester?: number | null
           sort_order?: number
           updated_at?: string
           year?: number
