@@ -4,7 +4,6 @@ import { useAuth } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
 import {
   LayoutDashboard,
-  GitBranch,
   BookOpen,
   ListTree,
   FileText,
