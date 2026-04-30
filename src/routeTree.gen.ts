@@ -16,7 +16,6 @@ import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as AdminUnitsRouteImport } from './routes/admin.units'
 import { Route as AdminSubjectsRouteImport } from './routes/admin.subjects'
 import { Route as AdminPdfsRouteImport } from './routes/admin.pdfs'
-import { Route as AdminBranchesRouteImport } from './routes/admin.branches'
 import { Route as AdminAnalyticsRouteImport } from './routes/admin.analytics'
 
 const AuthRoute = AuthRouteImport.update({
@@ -54,11 +53,6 @@ const AdminPdfsRoute = AdminPdfsRouteImport.update({
   path: '/pdfs',
   getParentRoute: () => AdminRoute,
 } as any)
-const AdminBranchesRoute = AdminBranchesRouteImport.update({
-  id: '/branches',
-  path: '/branches',
-  getParentRoute: () => AdminRoute,
-} as any)
 const AdminAnalyticsRoute = AdminAnalyticsRouteImport.update({
   id: '/analytics',
   path: '/analytics',
@@ -70,7 +64,6 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AdminRouteWithChildren
   '/auth': typeof AuthRoute
   '/admin/analytics': typeof AdminAnalyticsRoute
-  '/admin/branches': typeof AdminBranchesRoute
   '/admin/pdfs': typeof AdminPdfsRoute
   '/admin/subjects': typeof AdminSubjectsRoute
   '/admin/units': typeof AdminUnitsRoute
@@ -80,7 +73,6 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/admin/analytics': typeof AdminAnalyticsRoute
-  '/admin/branches': typeof AdminBranchesRoute
   '/admin/pdfs': typeof AdminPdfsRoute
   '/admin/subjects': typeof AdminSubjectsRoute
   '/admin/units': typeof AdminUnitsRoute
@@ -92,7 +84,6 @@ export interface FileRoutesById {
   '/admin': typeof AdminRouteWithChildren
   '/auth': typeof AuthRoute
   '/admin/analytics': typeof AdminAnalyticsRoute
-  '/admin/branches': typeof AdminBranchesRoute
   '/admin/pdfs': typeof AdminPdfsRoute
   '/admin/subjects': typeof AdminSubjectsRoute
   '/admin/units': typeof AdminUnitsRoute
@@ -105,7 +96,6 @@ export interface FileRouteTypes {
     | '/admin'
     | '/auth'
     | '/admin/analytics'
-    | '/admin/branches'
     | '/admin/pdfs'
     | '/admin/subjects'
     | '/admin/units'
@@ -115,7 +105,6 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/admin/analytics'
-    | '/admin/branches'
     | '/admin/pdfs'
     | '/admin/subjects'
     | '/admin/units'
@@ -126,7 +115,6 @@ export interface FileRouteTypes {
     | '/admin'
     | '/auth'
     | '/admin/analytics'
-    | '/admin/branches'
     | '/admin/pdfs'
     | '/admin/subjects'
     | '/admin/units'
@@ -190,13 +178,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminPdfsRouteImport
       parentRoute: typeof AdminRoute
     }
-    '/admin/branches': {
-      id: '/admin/branches'
-      path: '/branches'
-      fullPath: '/admin/branches'
-      preLoaderRoute: typeof AdminBranchesRouteImport
-      parentRoute: typeof AdminRoute
-    }
     '/admin/analytics': {
       id: '/admin/analytics'
       path: '/analytics'
@@ -209,7 +190,6 @@ declare module '@tanstack/react-router' {
 
 interface AdminRouteChildren {
   AdminAnalyticsRoute: typeof AdminAnalyticsRoute
-  AdminBranchesRoute: typeof AdminBranchesRoute
   AdminPdfsRoute: typeof AdminPdfsRoute
   AdminSubjectsRoute: typeof AdminSubjectsRoute
   AdminUnitsRoute: typeof AdminUnitsRoute
@@ -218,7 +198,6 @@ interface AdminRouteChildren {
 
 const AdminRouteChildren: AdminRouteChildren = {
   AdminAnalyticsRoute: AdminAnalyticsRoute,
-  AdminBranchesRoute: AdminBranchesRoute,
   AdminPdfsRoute: AdminPdfsRoute,
   AdminSubjectsRoute: AdminSubjectsRoute,
   AdminUnitsRoute: AdminUnitsRoute,
