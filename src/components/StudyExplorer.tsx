@@ -1,10 +1,15 @@
 import { useEffect, useMemo, useState } from "react";
 import { ChevronRight, BookOpen, FileText, Video, Calculator, FileQuestion, Bot, Download, Play } from "lucide-react";
-import { regulations, type Resource } from "@/data/jntukData";
+import { regulations, type Resource, type Subject } from "@/data/jntukData";
 import { UnitBotChat } from "@/components/UnitBotChat";
 import { OPEN_AI_BOT_EVENT } from "@/lib/navActions";
 
-type Step = "regulation" | "branch" | "year" | "semester" | "subject" | "unit" | "resource";
+// Simplified flow: Regulation → Year → Subject → Unit → Resource tabs.
+// Branch & Semester selectors were removed per product decision; underlying
+// data still contains them, so we collapse all subjects across branches/semesters
+// for the chosen Year (deduped by subject code) so no content is lost.
+
+type Step = "regulation" | "year" | "subject" | "unit" | "resource";
 
 const TABS = [
   { id: "syllabus", label: "Syllabus", icon: BookOpen },
@@ -19,28 +24,49 @@ type TabId = (typeof TABS)[number]["id"];
 
 export function StudyExplorer() {
   const [regCode, setRegCode] = useState<string>("");
-  const [branchCode, setBranchCode] = useState<string>("");
   const [yearNum, setYearNum] = useState<string>("");
-  const [semNum, setSemNum] = useState<string>("");
   const [subjectCode, setSubjectCode] = useState<string>("");
   const [unitId, setUnitId] = useState<string>("");
   const [tab, setTab] = useState<TabId>("syllabus");
 
   const regulation = useMemo(() => regulations.find((r) => r.code === regCode), [regCode]);
-  const branch = useMemo(() => regulation?.branches.find((b) => b.code === branchCode), [regulation, branchCode]);
-  const year = useMemo(() => branch?.years.find((y) => String(y.number) === yearNum), [branch, yearNum]);
-  const semester = useMemo(() => year?.semesters.find((s) => String(s.number) === semNum), [year, semNum]);
-  const subject = useMemo(() => semester?.subjects.find((s) => s.code === subjectCode), [semester, subjectCode]);
+
+  // Available years (union across branches — same set in practice: 1-4)
+  const years = useMemo(() => {
+    if (!regulation) return [];
+    const map = new Map<number, string>();
+    regulation.branches.forEach((b) => b.years.forEach((y) => map.set(y.number, y.label)));
+    return Array.from(map.entries())
+      .sort((a, b) => a[0] - b[0])
+      .map(([number, label]) => ({ number, label }));
+  }, [regulation]);
+
+  // Subjects for chosen year — flatten across all branches & both semesters,
+  // dedupe by subject code so common subjects appear once.
+  const subjects: Subject[] = useMemo(() => {
+    if (!regulation || !yearNum) return [];
+    const seen = new Map<string, Subject>();
+    regulation.branches.forEach((b) => {
+      b.years
+        .filter((y) => String(y.number) === yearNum)
+        .forEach((y) => {
+          y.semesters.forEach((s) => {
+            s.subjects.forEach((sub) => {
+              if (!seen.has(sub.code)) seen.set(sub.code, sub);
+            });
+          });
+        });
+    });
+    return Array.from(seen.values()).sort((a, b) => a.code.localeCompare(b.code));
+  }, [regulation, yearNum]);
+
+  const subject = useMemo(() => subjects.find((s) => s.code === subjectCode), [subjects, subjectCode]);
   const unit = useMemo(() => subject?.units.find((u) => u.id === unitId), [subject, unitId]);
 
   const reset = (from: Step) => {
     if (from === "regulation") {
-      setBranchCode(""); setYearNum(""); setSemNum(""); setSubjectCode(""); setUnitId("");
-    } else if (from === "branch") {
-      setYearNum(""); setSemNum(""); setSubjectCode(""); setUnitId("");
+      setYearNum(""); setSubjectCode(""); setUnitId("");
     } else if (from === "year") {
-      setSemNum(""); setSubjectCode(""); setUnitId("");
-    } else if (from === "semester") {
       setSubjectCode(""); setUnitId("");
     } else if (from === "subject") {
       setUnitId("");
@@ -48,9 +74,7 @@ export function StudyExplorer() {
   };
 
   const currentStep: Step = !regCode ? "regulation"
-    : !branchCode ? "branch"
     : !yearNum ? "year"
-    : !semNum ? "semester"
     : !subjectCode ? "subject"
     : !unitId ? "unit"
     : "resource";
@@ -58,7 +82,6 @@ export function StudyExplorer() {
   // Listen for global "open AI bot" requests from Navbar/Footer/etc.
   useEffect(() => {
     const handler = () => {
-      // Auto-fill the first available path so the AI tab can render immediately.
       const r = regulations[0];
       const b = r?.branches[0];
       const y = b?.years[0];
@@ -67,9 +90,7 @@ export function StudyExplorer() {
       const u = sub?.units[0];
 
       setRegCode((prev) => prev || r?.code || "");
-      setBranchCode((prev) => prev || b?.code || "");
       setYearNum((prev) => prev || (y ? String(y.number) : ""));
-      setSemNum((prev) => prev || (s ? String(s.number) : ""));
       setSubjectCode((prev) => prev || sub?.code || "");
       setUnitId((prev) => prev || u?.id || "");
       setTab("ai");
@@ -86,10 +107,10 @@ export function StudyExplorer() {
             Step-by-step explorer
           </span>
           <h2 className="mt-4 font-display text-3xl font-semibold sm:text-[40px]">
-            Find your study material in <span className="text-gradient-hero">6 simple steps</span>
+            Find your study material in <span className="text-gradient-hero">3 simple steps</span>
           </h2>
           <p className="mx-auto mt-3 max-w-xl text-sm text-muted-foreground sm:text-base">
-            Pick your regulation, branch, year, semester, subject and unit. Resources appear instantly.
+            Pick your regulation, year and subject. Notes, formulas, papers, videos and the AI bot appear instantly.
           </p>
         </div>
 
@@ -97,9 +118,7 @@ export function StudyExplorer() {
         <Breadcrumb
           items={[
             regulation?.code,
-            branch?.code,
-            year?.label,
-            semester ? `Sem ${semester.number}` : undefined,
+            yearNum ? years.find((y) => String(y.number) === yearNum)?.label : undefined,
             subject?.code,
             unit ? `Unit ${unit.number}` : undefined,
           ].filter(Boolean) as string[]}
@@ -117,53 +136,39 @@ export function StudyExplorer() {
               active={currentStep === "regulation"}
             />
             <Selector
-              label="2. Branch"
-              value={branchCode}
-              placeholder={regulation ? "Choose branch" : "Select regulation first"}
-              disabled={!regulation}
-              options={regulation?.branches.map((b) => ({ value: b.code, label: `${b.emoji} ${b.code} — ${b.name}` })) ?? []}
-              onChange={(v) => { setBranchCode(v); reset("branch"); }}
-              active={currentStep === "branch"}
-            />
-            <Selector
-              label="3. Year"
+              label="2. Year"
               value={yearNum}
-              placeholder={branch ? "Choose year" : "Select branch first"}
-              disabled={!branch}
-              options={branch?.years.map((y) => ({ value: String(y.number), label: y.label })) ?? []}
+              placeholder={regulation ? "Choose year" : "Select regulation first"}
+              disabled={!regulation}
+              options={years.map((y) => ({ value: String(y.number), label: y.label }))}
               onChange={(v) => { setYearNum(v); reset("year"); }}
               active={currentStep === "year"}
             />
             <Selector
-              label="4. Semester"
-              value={semNum}
-              placeholder={year ? "Choose semester" : "Select year first"}
-              disabled={!year}
-              options={year?.semesters.map((s) => ({ value: String(s.number), label: `Semester ${s.number}` })) ?? []}
-              onChange={(v) => { setSemNum(v); reset("semester"); }}
-              active={currentStep === "semester"}
-            />
-            <Selector
-              label="5. Subject"
+              label="3. Subject"
               value={subjectCode}
-              placeholder={semester ? "Choose subject" : "Select semester first"}
-              disabled={!semester}
-              options={semester?.subjects.map((s) => ({ value: s.code, label: `${s.code} — ${s.name}` })) ?? []}
+              placeholder={yearNum ? "Choose subject" : "Select year first"}
+              disabled={!yearNum}
+              options={subjects.map((s) => ({ value: s.code, label: `${s.code} — ${s.name}` }))}
               onChange={(v) => { setSubjectCode(v); reset("subject"); }}
               active={currentStep === "subject"}
             />
-            <Selector
-              label="6. Unit"
-              value={unitId}
-              placeholder={subject ? "Choose unit" : "Select subject first"}
-              disabled={!subject}
-              options={subject?.units.map((u) => ({ value: u.id, label: `Unit ${u.number} — ${u.title}` })) ?? []}
-              onChange={(v) => setUnitId(v)}
-              active={currentStep === "unit"}
-            />
           </div>
 
-          {/* Progress */}
+          {/* Unit picker shows once a subject is selected */}
+          {subject && (
+            <div className="mt-5">
+              <Selector
+                label="4. Unit"
+                value={unitId}
+                placeholder="Choose unit"
+                options={subject.units.map((u) => ({ value: u.id, label: `Unit ${u.number} — ${u.title}` }))}
+                onChange={(v) => setUnitId(v)}
+                active={currentStep === "unit"}
+              />
+            </div>
+          )}
+
           <ProgressDots step={currentStep} />
         </div>
 
@@ -259,11 +264,11 @@ function Selector({
 }
 
 function ProgressDots({ step }: { step: Step }) {
-  const steps: Step[] = ["regulation", "branch", "year", "semester", "subject", "unit", "resource"];
+  const steps: Step[] = ["regulation", "year", "subject", "unit", "resource"];
   const currentIdx = steps.indexOf(step);
   return (
     <div className="mt-6 flex items-center justify-center gap-2">
-      {steps.slice(0, 6).map((_, i) => (
+      {steps.slice(0, 4).map((_, i) => (
         <div
           key={i}
           className={`h-1.5 rounded-full transition-all ${
@@ -278,9 +283,7 @@ function ProgressDots({ step }: { step: Step }) {
 function EmptyHint({ step }: { step: Step }) {
   const messages: Record<Step, string> = {
     regulation: "👆 Start by choosing your regulation",
-    branch: "Now pick your branch",
-    year: "Select your current year",
-    semester: "Choose the semester",
+    year: "Now pick your year",
     subject: "Pick a subject",
     unit: "Almost there — pick a unit to see resources",
     resource: "",
