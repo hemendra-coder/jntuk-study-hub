@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
-import { GraduationCap, Search, Moon, Sun, Sparkles, Menu, X, Shield, LogIn, LogOut } from "lucide-react";
+import { GraduationCap, Search, Moon, Sun, Sparkles, Menu, X, Shield, LogIn, LogOut, FileText } from "lucide-react";
 import {
   applyTheme,
   getStoredTheme,
@@ -86,6 +86,15 @@ export function Navbar() {
             Ask AI
           </button>
 
+          {user && (
+            <Link
+              to="/notes"
+              className="ml-1 inline-flex h-10 items-center gap-1.5 rounded-full border border-border px-4 text-sm font-medium text-foreground hover:bg-card"
+            >
+              <FileText className="h-4 w-4" />
+              Notes
+            </Link>
+          )}
           {isAdmin && (
             <Link
               to="/admin"
