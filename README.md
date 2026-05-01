@@ -35,6 +35,18 @@ Instead:
    FIREBASE_TOKEN="<your-token>" npm run deploy:ci
    ```
 
+If your Firebase Hosting site name is different from the project ID, update `firebase.json`:
+
+```json
+{
+  "hosting": {
+    "site": "<your-hosting-site>",
+    "public": "dist/client",
+    "rewrites": [ ... ]
+  }
+}
+```
+
 ### Notes
 
 - `firebase login:ci` will fail in environments without a browser or interactive authentication.
