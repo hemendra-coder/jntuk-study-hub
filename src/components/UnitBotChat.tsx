@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Bot, Send, User as UserIcon, AlertCircle } from "lucide-react";
 import ReactMarkdown from "react-markdown";
-import { askUnitBot } from "@/server/aiChat";
+import { askUnitBot } from "@/lib/aiChat";
 import type { Resource } from "@/data/jntukData";
 
 type Msg = { role: "user" | "assistant"; content: string };
