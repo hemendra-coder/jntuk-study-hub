@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
-import { GraduationCap, Search, Moon, Sun, Sparkles, Menu, X, Shield, LogIn, LogOut, FileText } from "lucide-react";
+import { GraduationCap, Search, Moon, Sun, Sparkles, Menu, X, Shield, LogIn, LogOut, FileText, Calculator, FileQuestion, Video, Bot } from "lucide-react";
 import {
   applyTheme,
   getStoredTheme,
@@ -14,10 +14,7 @@ type NavItem = { label: string; action: () => void };
 
 const navItems: NavItem[] = [
   { label: "Home", action: () => window.scrollTo({ top: 0, behavior: "smooth" }) },
-  { label: "Regulations", action: () => scrollToId("explorer") },
-  { label: "Subjects", action: () => scrollToId("explorer") },
-  { label: "Formula Sheets", action: () => scrollToId("explorer") },
-  { label: "AI Bot", action: () => openAiBot() },
+  { label: "Explore", action: () => scrollToId("explorer") },
 ];
 
 export function Navbar() {
@@ -87,13 +84,23 @@ export function Navbar() {
           </button>
 
           {user && (
-            <Link
-              to="/notes"
-              className="ml-1 inline-flex h-10 items-center gap-1.5 rounded-full border border-border px-4 text-sm font-medium text-foreground hover:bg-card"
-            >
-              <FileText className="h-4 w-4" />
-              Notes
-            </Link>
+            <>
+              <Link to="/notes" className="ml-1 inline-flex h-9 items-center gap-1.5 rounded-full border border-border px-3 text-xs font-medium text-foreground hover:bg-card" title="Notes">
+                <FileText className="h-3.5 w-3.5" /> Notes
+              </Link>
+              <Link to="/formulas" className="inline-flex h-9 items-center gap-1.5 rounded-full border border-border px-3 text-xs font-medium text-foreground hover:bg-card" title="Formula sheets">
+                <Calculator className="h-3.5 w-3.5" /> Formulas
+              </Link>
+              <Link to="/papers" className="inline-flex h-9 items-center gap-1.5 rounded-full border border-border px-3 text-xs font-medium text-foreground hover:bg-card" title="Previous year papers">
+                <FileQuestion className="h-3.5 w-3.5" /> Papers
+              </Link>
+              <Link to="/videos" className="inline-flex h-9 items-center gap-1.5 rounded-full border border-border px-3 text-xs font-medium text-foreground hover:bg-card" title="Video lessons">
+                <Video className="h-3.5 w-3.5" /> Videos
+              </Link>
+              <Link to="/edubot" className="inline-flex h-9 items-center gap-1.5 rounded-full border border-border px-3 text-xs font-medium text-foreground hover:bg-card" title="EduBot tutor">
+                <Bot className="h-3.5 w-3.5" /> EduBot
+              </Link>
+            </>
           )}
           {isAdmin && (
             <Link
