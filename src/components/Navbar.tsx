@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
-import { GraduationCap, Search, Moon, Sun, Sparkles, Menu, X, Shield, LogIn, LogOut, FileText } from "lucide-react";
+import { GraduationCap, Search, Moon, Sun, Sparkles, Menu, X, Shield, LogIn, LogOut, FileText, Calculator, FileQuestion, Video, Bot } from "lucide-react";
 import {
   applyTheme,
   getStoredTheme,
@@ -14,10 +14,7 @@ type NavItem = { label: string; action: () => void };
 
 const navItems: NavItem[] = [
   { label: "Home", action: () => window.scrollTo({ top: 0, behavior: "smooth" }) },
-  { label: "Regulations", action: () => scrollToId("explorer") },
-  { label: "Subjects", action: () => scrollToId("explorer") },
-  { label: "Formula Sheets", action: () => scrollToId("explorer") },
-  { label: "AI Bot", action: () => openAiBot() },
+  { label: "Explore", action: () => scrollToId("explorer") },
 ];
 
 export function Navbar() {
