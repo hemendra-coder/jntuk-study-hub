@@ -6,7 +6,7 @@ import { Footer } from "@/components/Footer";
 import { ContentBrowser } from "@/components/ContentBrowser";
 import { Loader2 } from "lucide-react";
 
-export const Route = createFileRoute("/notes")({ component: Page });
+export const Route = createFileRoute("/formulas")({ component: Page });
 
 function Page() {
   const { user, loading } = useAuth();
@@ -18,7 +18,7 @@ function Page() {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-      <ContentBrowser table="notes" heading="Notes Library" emptyHint="No notes uploaded yet." />
+      <ContentBrowser table="formulas" heading="Formula Sheets" emptyHint="No formula sheets uploaded yet." />
       <Footer />
     </div>
   );
