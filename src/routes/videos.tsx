@@ -100,7 +100,6 @@ function VideosPage() {
                   <a
                     href={v.url} target="_blank" rel="noreferrer noopener"
                     className="inline-flex h-9 items-center justify-center gap-1.5 rounded-md bg-primary px-3 text-sm font-medium text-primary-foreground hover:opacity-90"
-                    onClick={() => supabase.from("videos").update({ view_count: v.view_count + 1 }).eq("id", v.id)}
                   >
                     <PlayCircle className="h-4 w-4" /> Watch
                   </a>
