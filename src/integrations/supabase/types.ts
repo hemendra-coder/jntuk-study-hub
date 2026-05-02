@@ -76,6 +76,180 @@ export type Database = {
           },
         ]
       }
+      formulas: {
+        Row: {
+          created_at: string
+          description: string | null
+          download_count: number
+          file_size: number | null
+          id: string
+          mime_type: string
+          semester: number | null
+          storage_path: string
+          subject_id: string | null
+          tags: string[]
+          title: string
+          unit_id: string | null
+          updated_at: string
+          uploaded_by: string | null
+          view_count: number
+          year: number | null
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          download_count?: number
+          file_size?: number | null
+          id?: string
+          mime_type?: string
+          semester?: number | null
+          storage_path: string
+          subject_id?: string | null
+          tags?: string[]
+          title: string
+          unit_id?: string | null
+          updated_at?: string
+          uploaded_by?: string | null
+          view_count?: number
+          year?: number | null
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          download_count?: number
+          file_size?: number | null
+          id?: string
+          mime_type?: string
+          semester?: number | null
+          storage_path?: string
+          subject_id?: string | null
+          tags?: string[]
+          title?: string
+          unit_id?: string | null
+          updated_at?: string
+          uploaded_by?: string | null
+          view_count?: number
+          year?: number | null
+        }
+        Relationships: []
+      }
+      notes: {
+        Row: {
+          created_at: string
+          description: string | null
+          download_count: number
+          file_size: number | null
+          id: string
+          mime_type: string
+          semester: number | null
+          storage_path: string
+          subject_id: string | null
+          tags: string[]
+          title: string
+          unit_id: string | null
+          updated_at: string
+          uploaded_by: string | null
+          view_count: number
+          year: number | null
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          download_count?: number
+          file_size?: number | null
+          id?: string
+          mime_type?: string
+          semester?: number | null
+          storage_path: string
+          subject_id?: string | null
+          tags?: string[]
+          title: string
+          unit_id?: string | null
+          updated_at?: string
+          uploaded_by?: string | null
+          view_count?: number
+          year?: number | null
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          download_count?: number
+          file_size?: number | null
+          id?: string
+          mime_type?: string
+          semester?: number | null
+          storage_path?: string
+          subject_id?: string | null
+          tags?: string[]
+          title?: string
+          unit_id?: string | null
+          updated_at?: string
+          uploaded_by?: string | null
+          view_count?: number
+          year?: number | null
+        }
+        Relationships: []
+      }
+      papers: {
+        Row: {
+          created_at: string
+          description: string | null
+          download_count: number
+          exam_year: number | null
+          file_size: number | null
+          id: string
+          mime_type: string
+          semester: number | null
+          storage_path: string
+          subject_id: string | null
+          tags: string[]
+          title: string
+          unit_id: string | null
+          updated_at: string
+          uploaded_by: string | null
+          view_count: number
+          year: number | null
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          download_count?: number
+          exam_year?: number | null
+          file_size?: number | null
+          id?: string
+          mime_type?: string
+          semester?: number | null
+          storage_path: string
+          subject_id?: string | null
+          tags?: string[]
+          title: string
+          unit_id?: string | null
+          updated_at?: string
+          uploaded_by?: string | null
+          view_count?: number
+          year?: number | null
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          download_count?: number
+          exam_year?: number | null
+          file_size?: number | null
+          id?: string
+          mime_type?: string
+          semester?: number | null
+          storage_path?: string
+          subject_id?: string | null
+          tags?: string[]
+          title?: string
+          unit_id?: string | null
+          updated_at?: string
+          uploaded_by?: string | null
+          view_count?: number
+          year?: number | null
+        }
+        Relationships: []
+      }
       pdf_files: {
         Row: {
           branch_id: string | null
@@ -285,6 +459,57 @@ export type Database = {
           id?: string
           role?: Database["public"]["Enums"]["app_role"]
           user_id?: string
+        }
+        Relationships: []
+      }
+      videos: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          semester: number | null
+          subject_id: string | null
+          tags: string[]
+          thumbnail_url: string | null
+          title: string
+          unit_id: string | null
+          updated_at: string
+          uploaded_by: string | null
+          url: string
+          view_count: number
+          year: number | null
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          semester?: number | null
+          subject_id?: string | null
+          tags?: string[]
+          thumbnail_url?: string | null
+          title: string
+          unit_id?: string | null
+          updated_at?: string
+          uploaded_by?: string | null
+          url: string
+          view_count?: number
+          year?: number | null
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          semester?: number | null
+          subject_id?: string | null
+          tags?: string[]
+          thumbnail_url?: string | null
+          title?: string
+          unit_id?: string | null
+          updated_at?: string
+          uploaded_by?: string | null
+          url?: string
+          view_count?: number
+          year?: number | null
         }
         Relationships: []
       }
