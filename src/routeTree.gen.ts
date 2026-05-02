@@ -13,6 +13,7 @@ import { Route as VideosRouteImport } from './routes/videos'
 import { Route as PapersRouteImport } from './routes/papers'
 import { Route as NotesRouteImport } from './routes/notes'
 import { Route as FormulasRouteImport } from './routes/formulas'
+import { Route as EdubotRouteImport } from './routes/edubot'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
@@ -40,6 +41,11 @@ const NotesRoute = NotesRouteImport.update({
 const FormulasRoute = FormulasRouteImport.update({
   id: '/formulas',
   path: '/formulas',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EdubotRoute = EdubotRouteImport.update({
+  id: '/edubot',
+  path: '/edubot',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRoute = AuthRouteImport.update({
@@ -87,6 +93,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteWithChildren
   '/auth': typeof AuthRoute
+  '/edubot': typeof EdubotRoute
   '/formulas': typeof FormulasRoute
   '/notes': typeof NotesRoute
   '/papers': typeof PapersRoute
@@ -100,6 +107,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/edubot': typeof EdubotRoute
   '/formulas': typeof FormulasRoute
   '/notes': typeof NotesRoute
   '/papers': typeof PapersRoute
@@ -115,6 +123,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteWithChildren
   '/auth': typeof AuthRoute
+  '/edubot': typeof EdubotRoute
   '/formulas': typeof FormulasRoute
   '/notes': typeof NotesRoute
   '/papers': typeof PapersRoute
@@ -131,6 +140,7 @@ export interface FileRouteTypes {
     | '/'
     | '/admin'
     | '/auth'
+    | '/edubot'
     | '/formulas'
     | '/notes'
     | '/papers'
@@ -144,6 +154,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/auth'
+    | '/edubot'
     | '/formulas'
     | '/notes'
     | '/papers'
@@ -158,6 +169,7 @@ export interface FileRouteTypes {
     | '/'
     | '/admin'
     | '/auth'
+    | '/edubot'
     | '/formulas'
     | '/notes'
     | '/papers'
@@ -173,6 +185,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRoute: typeof AdminRouteWithChildren
   AuthRoute: typeof AuthRoute
+  EdubotRoute: typeof EdubotRoute
   FormulasRoute: typeof FormulasRoute
   NotesRoute: typeof NotesRoute
   PapersRoute: typeof PapersRoute
@@ -207,6 +220,13 @@ declare module '@tanstack/react-router' {
       path: '/formulas'
       fullPath: '/formulas'
       preLoaderRoute: typeof FormulasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/edubot': {
+      id: '/edubot'
+      path: '/edubot'
+      fullPath: '/edubot'
+      preLoaderRoute: typeof EdubotRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth': {
@@ -290,6 +310,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRouteWithChildren,
   AuthRoute: AuthRoute,
+  EdubotRoute: EdubotRoute,
   FormulasRoute: FormulasRoute,
   NotesRoute: NotesRoute,
   PapersRoute: PapersRoute,
