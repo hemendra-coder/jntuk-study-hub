@@ -168,3 +168,55 @@ Admin → Analytics. Numbers are updated in real time via the
 
 **Q: I uploaded by mistake — how do I delete?**
 Admin → PDFs → 🗑. Storage object + DB row are both removed.
+
+---
+
+## Update — Separated content tables (Notes / Formulas / Papers / Videos)
+
+The single `pdf_files` table is now superseded by **four content tables**, one per type:
+
+| Table       | What it stores                            | Bucket folder convention   |
+|-------------|-------------------------------------------|----------------------------|
+| `notes`     | Lecture notes PDFs                        | `pdfs/notes/<SUBJECT>/...` |
+| `formulas`  | Formula sheet PDFs                        | `pdfs/formulas/<SUBJECT>/...` |
+| `papers`    | Previous-year question papers             | `pdfs/papers/<SUBJECT>/...` |
+| `videos`    | Video links (YouTube etc.) — no file      | n/a (URL only)             |
+
+All four tables enforce the same access rule:
+- **Read:** any authenticated user
+- **Write / update / delete:** only admins (`has_role(auth.uid(), 'admin')`)
+
+### Filename auto-classification
+
+When you drop PDFs into `/admin/pdfs`, each file is automatically tagged with a
+content type by scanning the filename:
+
+- `formula`, `sheet`, `cheatsheet` → **Formulas**
+- `pyq`, `paper`, `prev`, `mid1`, `2023` (any 4-digit year), `exam` → **Papers**
+- `notes`, `lecture`, `unit3`, `chapter`, `handout` → **Notes**
+- everything else → **Notes** (safe default)
+
+Each staged file shows a dropdown next to it so you can **manually override** the
+detected type before clicking *Upload*. A global "Force type" selector at the top
+lets you skip auto-detection entirely for a batch.
+
+### Public routes for students
+
+| URL          | Reads from   | Notes                       |
+|--------------|--------------|-----------------------------|
+| `/notes`     | `notes`      | Real-time, instant search   |
+| `/formulas`  | `formulas`   | Real-time, instant search   |
+| `/papers`    | `papers`     | Real-time, instant search   |
+| `/videos`    | `videos`     | Click-through to video URL  |
+| `/edubot`    | (AI Gateway) | Global teacher-style tutor  |
+
+All four content browsers share the same realtime subscription pattern: as soon
+as an admin uploads, every signed-in viewer sees the new item appear without a
+page refresh.
+
+### Adding a video
+
+Videos are URL-only. From `/admin/pdfs` click **"Add a video link"**, paste the
+URL, optionally pick subject/unit/tags, and save. The row appears live in
+`/videos` for all users.
+
