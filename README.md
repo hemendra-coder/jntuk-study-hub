@@ -29,11 +29,6 @@ Instead:
    ```bash
    firebase login:ci
    ```
-   If you are on a remote terminal without a browser, run:
-   ```bash
-   firebase login:ci --no-localhost
-   ```
-   Then open the displayed URL in your local browser and paste the code back into the terminal.
 2. Copy the generated token.
 3. Run:
    ```bash
