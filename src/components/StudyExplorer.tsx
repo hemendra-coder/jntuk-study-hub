@@ -337,6 +337,15 @@ function ResourceView({
     );
   }
 
+  // Live content tabs pull from the database (admin uploads).
+  const tableMap: Record<string, "notes" | "formulas" | "papers" | "videos" | null> = {
+    note: "notes", formula: "formulas", paper: "papers", video: "videos",
+  };
+  const dbTable = tableMap[tab];
+  if (dbTable && subject) {
+    return <UnitContentList table={dbTable} subjectCode={subject.code} unitNumber={unit.number} />;
+  }
+
   const items = unit.resources.filter((r) => r.kind === tab);
   if (items.length === 0) {
     return <p className="py-8 text-center text-sm text-muted-foreground">No resources yet for this section.</p>;
