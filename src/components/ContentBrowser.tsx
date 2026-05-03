@@ -1,13 +1,14 @@
-// Generic real-time PDF content browser shared by /notes, /formulas, /papers.
+// Generic real-time content browser shared by /notes, /formulas, /papers.
 // - Realtime list (Supabase channel)
-// - Instant search
-// - In-page preview + reliable download
+// - Regulation → Year → Subject filters (matches the explorer flow)
+// - Instant search + in-page preview + reliable download
 import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
 import { Search, Download, Eye, Loader2, FileText, X } from "lucide-react";
 
@@ -21,7 +22,17 @@ export type ContentRow = {
   created_at: string;
   view_count: number;
   download_count: number;
+  subject_id: string | null;
+  year: number | null;
 };
+
+interface SubjectRow {
+  id: string;
+  code: string;
+  name: string;
+  year: number | null;
+  regulation: string;
+}
 
 interface Props {
   table: "notes" | "formulas" | "papers";
@@ -32,22 +43,30 @@ interface Props {
 export function ContentBrowser({ table, heading, emptyHint }: Props) {
   const { user } = useAuth();
   const [rows, setRows] = useState<ContentRow[]>([]);
+  const [subjects, setSubjects] = useState<SubjectRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [query, setQuery] = useState("");
+  const [regulation, setRegulation] = useState<string>("all");
+  const [year, setYear] = useState<string>("all");
+  const [subjectId, setSubjectId] = useState<string>("all");
   const [active, setActive] = useState<{ row: ContentRow; url: string } | null>(null);
   const [opening, setOpening] = useState<string | null>(null);
 
   useEffect(() => {
     let alive = true;
     const load = async () => {
-      const { data, error } = await supabase
-        .from(table)
-        .select("id,title,description,storage_path,file_size,tags,created_at,view_count,download_count")
-        .order("created_at", { ascending: false })
-        .limit(500);
+      const [{ data, error }, { data: subs }] = await Promise.all([
+        supabase
+          .from(table)
+          .select("id,title,description,storage_path,file_size,tags,created_at,view_count,download_count,subject_id,year")
+          .order("created_at", { ascending: false })
+          .limit(500),
+        supabase.from("subjects").select("id, code, name, year, regulation"),
+      ]);
       if (!alive) return;
       if (error) toast.error(error.message);
       else setRows((data ?? []) as ContentRow[]);
+      setSubjects((subs ?? []) as SubjectRow[]);
       setLoading(false);
     };
     load();
@@ -71,14 +90,40 @@ export function ContentBrowser({ table, heading, emptyHint }: Props) {
     };
   }, [table]);
 
+  // Cascade options
+  const regulations = useMemo(
+    () => Array.from(new Set(subjects.map((s) => s.regulation))).filter(Boolean).sort(),
+    [subjects],
+  );
+  const years = useMemo(() => {
+    const pool = subjects.filter((s) => regulation === "all" || s.regulation === regulation);
+    return Array.from(new Set(pool.map((s) => s.year).filter((y): y is number => y != null))).sort((a, b) => a - b);
+  }, [subjects, regulation]);
+  const subjectOptions = useMemo(() => {
+    return subjects
+      .filter((s) => regulation === "all" || s.regulation === regulation)
+      .filter((s) => year === "all" || String(s.year) === year)
+      .sort((a, b) => a.code.localeCompare(b.code));
+  }, [subjects, regulation, year]);
+
+  // Reset cascading selections when parent changes
+  useEffect(() => { setYear("all"); setSubjectId("all"); }, [regulation]);
+  useEffect(() => { setSubjectId("all"); }, [year]);
+
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
-    if (!q) return rows;
+    const allowedSubjectIds = new Set(subjectOptions.map((s) => s.id));
     return rows.filter((p) => {
+      // Filter by regulation/year via the subject pool
+      if (regulation !== "all" || year !== "all") {
+        if (!p.subject_id || !allowedSubjectIds.has(p.subject_id)) return false;
+      }
+      if (subjectId !== "all" && p.subject_id !== subjectId) return false;
+      if (!q) return true;
       const hay = `${p.title} ${p.description ?? ""} ${(p.tags ?? []).join(" ")}`.toLowerCase();
       return hay.includes(q);
     });
-  }, [rows, query]);
+  }, [rows, query, regulation, year, subjectId, subjectOptions]);
 
   const openViewer = async (row: ContentRow) => {
     setOpening(row.id);
@@ -117,7 +162,9 @@ export function ContentBrowser({ table, heading, emptyHint }: Props) {
     <section className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
       <div className="mb-8">
         <h1 className="font-display text-3xl font-semibold sm:text-4xl">{heading}</h1>
-        <p className="mt-2 text-sm text-muted-foreground">Updates live as new files are uploaded.</p>
+        <p className="mt-2 text-sm text-muted-foreground">
+          Filter by regulation, year and subject. Updates live as new files are uploaded.
+        </p>
       </div>
 
       {active && (
@@ -157,6 +204,31 @@ export function ContentBrowser({ table, heading, emptyHint }: Props) {
         </Card>
       )}
 
+      {/* Cascade filters */}
+      <div className="mb-4 grid grid-cols-1 gap-2 sm:grid-cols-3">
+        <Select value={regulation} onValueChange={setRegulation}>
+          <SelectTrigger><SelectValue placeholder="Regulation" /></SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All regulations</SelectItem>
+            {regulations.map((r) => <SelectItem key={r} value={r}>{r}</SelectItem>)}
+          </SelectContent>
+        </Select>
+        <Select value={year} onValueChange={setYear} disabled={years.length === 0}>
+          <SelectTrigger><SelectValue placeholder="Year" /></SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All years</SelectItem>
+            {years.map((y) => <SelectItem key={y} value={String(y)}>Year {y}</SelectItem>)}
+          </SelectContent>
+        </Select>
+        <Select value={subjectId} onValueChange={setSubjectId} disabled={subjectOptions.length === 0}>
+          <SelectTrigger><SelectValue placeholder="Subject" /></SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All subjects</SelectItem>
+            {subjectOptions.map((s) => <SelectItem key={s.id} value={s.id}>{s.code} — {s.name}</SelectItem>)}
+          </SelectContent>
+        </Select>
+      </div>
+
       <div className="mb-4 flex items-center gap-2">
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
@@ -179,7 +251,7 @@ export function ContentBrowser({ table, heading, emptyHint }: Props) {
       ) : filtered.length === 0 ? (
         <div className="rounded-2xl border border-dashed border-border bg-card/50 p-10 text-center">
           <FileText className="mx-auto h-8 w-8 text-muted-foreground" />
-          <p className="mt-3 text-sm text-muted-foreground">{rows.length === 0 ? emptyHint : "No matches."}</p>
+          <p className="mt-3 text-sm text-muted-foreground">{rows.length === 0 ? emptyHint : "No matches for these filters."}</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
