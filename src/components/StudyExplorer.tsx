@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { ChevronRight, BookOpen, FileText, Video, Calculator, FileQuestion, Bot, Download, Play } from "lucide-react";
 import { regulations, type Resource, type Subject } from "@/data/jntukData";
 import { UnitBotChat } from "@/components/UnitBotChat";
+import { UnitContentList } from "@/components/UnitContentList";
 import { OPEN_AI_BOT_EVENT } from "@/lib/navActions";
 
 // Simplified flow: Regulation → Year → Subject → Unit → Resource tabs.
@@ -334,6 +335,15 @@ function ResourceView({
         }}
       />
     );
+  }
+
+  // Live content tabs pull from the database (admin uploads).
+  const tableMap: Record<string, "notes" | "formulas" | "papers" | "videos" | null> = {
+    note: "notes", formula: "formulas", paper: "papers", video: "videos",
+  };
+  const dbTable = tableMap[tab];
+  if (dbTable && subject) {
+    return <UnitContentList table={dbTable} subjectCode={subject.code} unitNumber={unit.number} />;
   }
 
   const items = unit.resources.filter((r) => r.kind === tab);
