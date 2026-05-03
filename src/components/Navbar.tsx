@@ -162,10 +162,7 @@ export function Navbar() {
               {navItems.map((item, i) => (
                 <button
                   key={item.label}
-                  onClick={() => {
-                    setOpen(false);
-                    item.action();
-                  }}
+                  onClick={() => { setOpen(false); item.action(); }}
                   className={`rounded-lg px-4 py-3 text-left text-base ${
                     i === 0
                       ? "bg-card-elevated text-foreground"
@@ -175,16 +172,55 @@ export function Navbar() {
                   {item.label}
                 </button>
               ))}
+
+              {user && (
+                <>
+                  <div className="mt-3 px-4 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">Library</div>
+                  <Link to="/notes" onClick={() => setOpen(false)} className="flex items-center gap-2 rounded-lg px-4 py-3 text-base text-foreground hover:bg-card-elevated">
+                    <FileText className="h-4 w-4" /> Notes
+                  </Link>
+                  <Link to="/formulas" onClick={() => setOpen(false)} className="flex items-center gap-2 rounded-lg px-4 py-3 text-base text-foreground hover:bg-card-elevated">
+                    <Calculator className="h-4 w-4" /> Formula Sheets
+                  </Link>
+                  <Link to="/papers" onClick={() => setOpen(false)} className="flex items-center gap-2 rounded-lg px-4 py-3 text-base text-foreground hover:bg-card-elevated">
+                    <FileQuestion className="h-4 w-4" /> PYQ Papers
+                  </Link>
+                  <Link to="/videos" onClick={() => setOpen(false)} className="flex items-center gap-2 rounded-lg px-4 py-3 text-base text-foreground hover:bg-card-elevated">
+                    <Video className="h-4 w-4" /> Videos
+                  </Link>
+                  <Link to="/edubot" onClick={() => setOpen(false)} className="flex items-center gap-2 rounded-lg px-4 py-3 text-base text-foreground hover:bg-card-elevated">
+                    <Bot className="h-4 w-4" /> EduBot
+                  </Link>
+                </>
+              )}
+              {isAdmin && (
+                <Link to="/admin" onClick={() => setOpen(false)} className="flex items-center gap-2 rounded-lg px-4 py-3 text-base text-foreground hover:bg-card-elevated">
+                  <Shield className="h-4 w-4" /> Admin
+                </Link>
+              )}
+
               <button
-                onClick={() => {
-                  setOpen(false);
-                  openAiBot();
-                }}
+                onClick={() => { setOpen(false); openAiBot(); }}
                 className="mt-4 inline-flex h-12 items-center justify-center gap-2 rounded-full bg-gradient-cta px-6 text-sm font-medium text-white shadow-glow-purple"
               >
-                <Sparkles className="h-4 w-4" />
-                Ask AI
+                <Sparkles className="h-4 w-4" /> Ask AI
               </button>
+
+              {user ? (
+                <button
+                  onClick={() => { setOpen(false); signOut(); }}
+                  className="mt-2 inline-flex h-12 items-center justify-center gap-2 rounded-full border border-border px-6 text-sm font-medium text-foreground hover:bg-card-elevated"
+                >
+                  <LogOut className="h-4 w-4" /> Sign out
+                </button>
+              ) : (
+                <button
+                  onClick={() => { setOpen(false); navigate({ to: "/auth" }); }}
+                  className="mt-2 inline-flex h-12 items-center justify-center gap-2 rounded-full border border-border px-6 text-sm font-medium text-foreground hover:bg-card-elevated"
+                >
+                  <LogIn className="h-4 w-4" /> Sign in
+                </button>
+              )}
             </nav>
           </div>
         </div>
