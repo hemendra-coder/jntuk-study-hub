@@ -2,7 +2,7 @@
 // Used inside the home StudyExplorer's resource tabs so admin uploads appear
 // instantly under the matching Regulation → Year → Subject → Unit selection.
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client.ts";
+import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth";
 import { Download, Eye, Loader2, Play, FileText } from "lucide-react";
 import { toast } from "sonner";
