@@ -4,13 +4,18 @@
   "framework": null,
   "cleanUrls": true,
   "trailingSlash": false,
+  "regions": ["iad1"],
   "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "/api/$1"
+    },
     {
       "source": "/assets/(.*)",
       "destination": "/assets/$1"
     },
     {
-      "source": "/(.*)",
+      "source": "/((?!assets|api|\.json|\.js|\.css|favicon).*)",
       "destination": "/index.html"
     }
   ],
@@ -30,6 +35,15 @@
         {
           "key": "Cache-Control",
           "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
         }
       ]
     }
