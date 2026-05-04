@@ -131,7 +131,7 @@ export function ContentBrowser({ table, heading, emptyHint }: Props) {
       const { data, error } = await supabase.storage.from("pdfs").createSignedUrl(row.storage_path, 3600);
       if (error) throw error;
       setActive({ row, url: data.signedUrl });
-      supabase.from("file_views").insert({ pdf_id: row.id, action: "view", user_id: user?.id ?? null });
+      if (user?.id) supabase.from("file_views").insert({ pdf_id: row.id, action: "view", user_id: user.id });
     } catch (e: any) {
       toast.error(e.message ?? "Could not open file");
     } finally {
@@ -152,7 +152,7 @@ export function ContentBrowser({ table, heading, emptyHint }: Props) {
       document.body.appendChild(a);
       a.click();
       a.remove();
-      supabase.from("file_views").insert({ pdf_id: row.id, action: "download", user_id: user?.id ?? null });
+      if (user?.id) supabase.from("file_views").insert({ pdf_id: row.id, action: "download", user_id: user.id });
     } catch (e: any) {
       toast.error(e.message ?? "Download failed");
     }

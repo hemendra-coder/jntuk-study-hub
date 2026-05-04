@@ -87,7 +87,7 @@ export function UnitContentList({ table, subjectCode, unitNumber }: Props) {
     const { data, error } = await supabase.storage.from("pdfs").createSignedUrl(r.storage_path, 3600);
     if (error || !data) { toast.error(error?.message ?? "Failed"); return; }
     window.open(data.signedUrl, "_blank");
-    supabase.from("file_views").insert({ pdf_id: r.id, action: "view", user_id: user?.id ?? null });
+    if (user?.id) supabase.from("file_views").insert({ pdf_id: r.id, action: "view", user_id: user.id });
   };
   const downloadFile = async (r: FileRow) => {
     const filename = r.title.endsWith(".pdf") ? r.title : `${r.title}.pdf`;
@@ -95,7 +95,7 @@ export function UnitContentList({ table, subjectCode, unitNumber }: Props) {
     if (error || !data) { toast.error(error?.message ?? "Failed"); return; }
     const a = document.createElement("a"); a.href = data.signedUrl; a.download = filename;
     document.body.appendChild(a); a.click(); a.remove();
-    supabase.from("file_views").insert({ pdf_id: r.id, action: "download", user_id: user?.id ?? null });
+    if (user?.id) supabase.from("file_views").insert({ pdf_id: r.id, action: "download", user_id: user.id });
   };
 
   if (loading) {
