@@ -2,17 +2,28 @@
 import { createClient } from '@supabase/supabase-js';
 import type { Database } from './types';
 
+// Hardcoded public values for this project. These are safe to ship in client
+// code (the anon/publishable key is meant to be public — RLS protects data).
+// They act as a fallback so the app still boots on hosts where env vars aren't
+// configured (e.g. fresh Vercel/Firebase deploys), preventing a blank/blue
+// screen on first load.
+const FALLBACK_SUPABASE_URL = 'https://sjdzhqgebrurewwvrlqn.supabase.co';
+const FALLBACK_SUPABASE_PUBLISHABLE_KEY =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNqZHpocWdlYnJ1cmV3d3ZybHFuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcwMDcxNTIsImV4cCI6MjA5MjU4MzE1Mn0.KCzYWuuSWla7LEb4_sGEw9-xPtveNKCZ2RZLnLk7rL4';
+
 function createSupabaseClient() {
   // Use import.meta.env for client-side (Vite build-time replacement)
   // Fall back to process.env for SSR (server-side rendering)
-  const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL;
-  const SUPABASE_PUBLISHABLE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY || process.env.SUPABASE_PUBLISHABLE_KEY;
-
-  if (!SUPABASE_URL || !SUPABASE_PUBLISHABLE_KEY) {
-    throw new Error(
-      'Missing Supabase environment variables. Ensure SUPABASE_URL and SUPABASE_PUBLISHABLE_KEY (or VITE_ prefixed versions) are set in your .env file.'
-    );
-  }
+  // Final fallback: hardcoded public values so the app boots even when env
+  // vars are missing on the hosting platform.
+  const SUPABASE_URL =
+    (typeof import.meta !== 'undefined' && import.meta.env?.VITE_SUPABASE_URL) ||
+    (typeof process !== 'undefined' && process.env?.SUPABASE_URL) ||
+    FALLBACK_SUPABASE_URL;
+  const SUPABASE_PUBLISHABLE_KEY =
+    (typeof import.meta !== 'undefined' && import.meta.env?.VITE_SUPABASE_PUBLISHABLE_KEY) ||
+    (typeof process !== 'undefined' && process.env?.SUPABASE_PUBLISHABLE_KEY) ||
+    FALLBACK_SUPABASE_PUBLISHABLE_KEY;
 
   return createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
     auth: {
@@ -33,4 +44,3 @@ export const supabase = new Proxy({} as ReturnType<typeof createSupabaseClient>,
     return Reflect.get(_supabase, prop, receiver);
   },
 });
-

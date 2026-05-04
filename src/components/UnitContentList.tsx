@@ -108,7 +108,6 @@ export function UnitContentList({ table, subjectCode, unitNumber }: Props) {
         <p className="mt-2 text-sm text-muted-foreground">
           No {table} uploaded yet for this subject &amp; unit.
         </p>
-        {!user && <p className="mt-1 text-xs text-muted-foreground">Sign in to view content.</p>}
       </div>
     );
   }
