@@ -131,13 +131,34 @@ export function Navbar() {
           )}
         </div>
 
-        <button
-          onClick={() => setOpen(true)}
-          className="flex h-10 w-10 items-center justify-center rounded-lg text-foreground lg:hidden"
-          aria-label="Open menu"
-        >
-          <Menu className="h-6 w-6" />
-        </button>
+        <div className="flex items-center gap-1.5 lg:hidden">
+          {user ? (
+            <button
+              onClick={() => signOut()}
+              className="inline-flex h-9 items-center gap-1.5 rounded-full border border-border px-3 text-xs font-medium text-foreground"
+              aria-label="Sign out"
+            >
+              <LogOut className="h-3.5 w-3.5" />
+              <span className="hidden xs:inline">Sign out</span>
+            </button>
+          ) : (
+            <button
+              onClick={() => navigate({ to: "/auth" })}
+              className="inline-flex h-9 items-center gap-1.5 rounded-full bg-gradient-cta px-3 text-xs font-medium text-white shadow-glow-purple"
+              aria-label="Sign in"
+            >
+              <LogIn className="h-3.5 w-3.5" />
+              Sign in
+            </button>
+          )}
+          <button
+            onClick={() => setOpen(true)}
+            className="flex h-10 w-10 items-center justify-center rounded-lg text-foreground"
+            aria-label="Open menu"
+          >
+            <Menu className="h-6 w-6" />
+          </button>
+        </div>
       </div>
 
       {/* Mobile menu */}

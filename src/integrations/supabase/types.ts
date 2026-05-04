@@ -50,21 +50,21 @@ export type Database = {
           created_at: string
           id: string
           pdf_id: string
-          user_id: string | null
+          user_id: string
         }
         Insert: {
           action: string
           created_at?: string
           id?: string
           pdf_id: string
-          user_id?: string | null
+          user_id: string
         }
         Update: {
           action?: string
           created_at?: string
           id?: string
           pdf_id?: string
-          user_id?: string | null
+          user_id?: string
         }
         Relationships: [
           {
