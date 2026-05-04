@@ -1,0 +1,1 @@
+REVOKE EXECUTE ON FUNCTION public.bump_pdf_counter() FROM PUBLIC, anon, authenticated;
