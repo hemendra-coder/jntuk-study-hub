@@ -19,7 +19,7 @@
 1. Go to https://vercel.com/dashboard
 2. Click **"Add New"** → **"Project"**
 3. Select **"Import Git Repository"**
-4. Search for and select **`jntuk-study-hub`**
+4. Search for and select **`jntuk-study-hubx`**
 5. Click **"Import"**
 6. Vercel will automatically:
    - Detect the build configuration from `vercel.json`

@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "site": "jntuk-study-hub",
+    "site": "jntuk-study-hubx",
     "public": "dist/client",
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
     "rewrites": [

@@ -1,4 +1,4 @@
-# JNTUK Study Hub
+# JNTUK Study Hubx
 
 ## Firebase Deployment
 
